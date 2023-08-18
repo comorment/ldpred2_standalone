@@ -57,18 +57,25 @@ RUN cd /tmp && \
     cd /tmp && \
     rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
+# PRSice-2 build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+   cmake=3.22.1-1ubuntu1.22.04.1 \
+   zlib1g-dev \
+   && \
+   apt-get clean && \
+   rm -rf /var/lib/apt/lists/*
 
-
-# RUN wget --no-check-certificate https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20200616.zip && \
-#     unzip -j plink_linux_x86_64_20200616.zip && \
-#     rm -rf plink_linux_x86_64_20200616.zip && \
-#     cp plink /bin
-
-# install PRSice 2
-# RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/releases/download/2.3.5/PRSice_linux.zip && \
-#     unzip PRSice_linux.zip  && \
-#     rm -rf PRSice_linux.zip && \
-#     cp PRSice_linux  /bin
+# install PRSice-2
+RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
+    unzip 2.3.5.zip && \
+    cd PRSice-2.3.5 && \
+    mkdir build && \
+    cd build && \
+    cmake ../ && \
+    make && \
+    cp PRSice/bin/PRSice /bin/ && \
+    cd /tmp && \
+    rm -rf 2.3.5.zip PRSice-2.3.5
 
 RUN rm -rf /tmp/*
 
