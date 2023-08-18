@@ -1,4 +1,4 @@
-name: ldpred2-standalone
+name: container_template
 channels:
   - conda-forge
   - defaults

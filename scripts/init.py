@@ -18,8 +18,8 @@ if __name__ == '__main__':
         f'The project should be hosted at https://github.com/{name}/{project}')
 
     # old variables which will be renamed
-    OLDNAME = 'comorment'
-    OLDPROJECT = 'ldpred2-standalone'
+    OLDNAME = 'precimed'
+    OLDPROJECT = 'container_template'
 
     while True:
         response = input('Is this correct (yes/no)? ')
