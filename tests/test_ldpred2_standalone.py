@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 """
-Test module for ``container_template.sif`` singularity build
-or ``container_template`` dockerfile build
+Test module for ``ldpred2_standalone.sif`` singularity build
+or ``ldpred2_standalone`` dockerfile build
 
 In case ``singularity`` is unavailable, the test function(s) should fall
 back to ``docker``.
@@ -21,7 +21,7 @@ port = sock.getsockname()[1]
 # Check that (1) singularity exist, and (2) if not, check for docker.
 # If neither are found, tests will not run.
 try:
-    pth = os.path.join('containers', 'container_template.sif')
+    pth = os.path.join('containers', 'ldpred2_standalone.sif')
     out = subprocess.run('singularity')
     cwd = os.getcwd()
     PREFIX = f'singularity run {pth}'
@@ -30,10 +30,10 @@ except FileNotFoundError:
     try:
         out = subprocess.run('docker')
         pwd = os.getcwd()
-        PREFIX = f'docker run -p {port}:{port} container_template'
+        PREFIX = f'docker run -p {port}:{port} ldpred2_standalone'
         PREFIX_MOUNT = (
             f'docker run -p {port}:{port} ' +
-            f'--mount type=bind,source={pwd},target={pwd} container_template')
+            f'--mount type=bind,source={pwd},target={pwd} ldpred2_standalone')
     except FileNotFoundError:
         raise FileNotFoundError(
             'Neither `singularity` nor `docker` found in PATH.' +
@@ -45,14 +45,14 @@ def test_assert():
     assert True
 
 
-def test_container_template_python():
+def test_ldpred2_standalone_python():
     """test that the Python installation works"""
     call = f'{PREFIX} python --version'
     out = subprocess.run(call.split(' '))
     assert out.returncode == 0
 
 
-def test_container_template_python_script():
+def test_ldpred2_standalone_python_script():
     '''test that Python can run a script'''
     pwd = os.getcwd() if PREFIX.rfind('docker') >= 0 else '.'
     call = f'''{PREFIX_MOUNT} python {pwd}/tests/extras/hello.py'''
@@ -60,7 +60,7 @@ def test_container_template_python_script():
     assert out.returncode == 0
 
 
-def test_container_template_python_packages():
+def test_ldpred2_standalone_python_packages():
     '''test that the Python packages are installed'''
     packages = [
         'numpy',
