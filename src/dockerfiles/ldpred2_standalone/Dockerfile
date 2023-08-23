@@ -6,16 +6,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 WORKDIR /tmp/
 
-# R dependencies
-RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('argparser', version='0.7.1', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('bigsnpr', version='1.11.6', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('data.table', version='1.14.6', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('stringr', version='1.5.0', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('R.utils', version='2.12.2', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('tidyverse', version='1.3.2', repos='https://packagemanager.rstudio.com/cran/__linux__/focal/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))"
-
-
 # some system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils=2.4.10 && \
     apt-get update && apt-get install -y --no-install-recommends ca-certificates=20230311ubuntu0.22.04.1 && \
@@ -23,9 +13,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends apt-utils=2.4.1
 RUN apt-get update && apt-get install -y --no-install-recommends \
    unzip=6.0-26ubuntu3.1 \
    wget=1.21.2-2ubuntu1 \
+   libicu-dev=70.1-2 \
    && \
    apt-get clean && \
    rm -rf /var/lib/apt/lists/*
+
+# R dependencies
+RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('argparser', version='0.7.1', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('bigsnpr', version='1.11.6', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('data.table', version='1.14.6', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('stringi', version='1.7.12', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('stringr', version='1.5.0', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('R.utils', version='2.12.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('tidyverse', version='1.3.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))"
 
 # install plink 2
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -105,6 +106,7 @@ RUN cd PRSice-2.3.5 && \
     cd /tmp && \
     rm -rf 2.3.5.zip PRSice-2.3.5
 
+# clean up
 RUN rm -rf /tmp/*
 
 WORKDIR /

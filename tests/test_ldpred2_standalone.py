@@ -25,7 +25,8 @@ try:
     out = subprocess.run('singularity')
     cwd = os.getcwd()
     PREFIX = f'singularity run {pth}'
-    PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --home={cwd}:/home/ {pth}'
+    PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --no-home --bind {cwd} {pth}'
+    # PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --home={cwd}:/home/ {pth}'
 except FileNotFoundError:
     try:
         out = subprocess.run('docker')
@@ -34,10 +35,10 @@ except FileNotFoundError:
         PREFIX_MOUNT = (
             f'docker run -p {port}:{port} ' +
             f'--mount type=bind,source={pwd},target={pwd} ldpred2_standalone')
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         raise FileNotFoundError(
             'Neither `singularity` nor `docker` found in PATH.' +
-            'Can not run tests!')
+            'Can not run tests!') from e
 
 
 def test_assert():
@@ -45,32 +46,39 @@ def test_assert():
     assert True
 
 
-def test_ldpred2_standalone_python():
-    """test that the Python installation works"""
-    call = f'{PREFIX} python --version'
+def test_ldpred2_standalone_R():
+    call = f'{PREFIX} R --version'
     out = subprocess.run(call.split(' '))
     assert out.returncode == 0
 
 
-def test_ldpred2_standalone_python_script():
-    '''test that Python can run a script'''
-    pwd = os.getcwd() if PREFIX.rfind('docker') >= 0 else '.'
-    call = f'''{PREFIX_MOUNT} python {pwd}/tests/extras/hello.py'''
-    out = subprocess.run(call.split(' '), capture_output=True)
+def test_ldpred2_standalone_Rscript():
+    call = f'{PREFIX} Rscript --version'
+    out = subprocess.run(call.split(' '))
     assert out.returncode == 0
 
 
-def test_ldpred2_standalone_python_packages():
-    '''test that the Python packages are installed'''
-    packages = [
-        'numpy',
-        'scipy',
-        'pandas',
-        'matplotlib',
-        'seaborn',
-        'sklearn'
-    ]
-    importstr = 'import ' + ', '.join(packages)
-    call = f"{PREFIX} python -c '{importstr}'"
-    out = subprocess.run(call, shell=True)
+def test_ldpred2_standalone_R_packages():
+    pwd = os.getcwd()
+    call = f'{PREFIX_MOUNT} Rscript tests/extras/r.R'
+    out = subprocess.run(call.split(' '))
     assert out.returncode == 0
+
+
+def test_ldpred2_standalone_bin_prsice():
+    call = f'{PREFIX} PRSice --version'
+    out = subprocess.run(call.split(' '))
+    assert out.returncode == 0
+
+
+def test_ldpred2_standalone_bin_plink():
+    call = f'{PREFIX} plink --version'
+    out = subprocess.run(call.split(' '))
+    assert out.returncode == 0
+
+
+def test_ldpred2_standalone_bin_plink2():
+    call = f'{PREFIX} plink2 --version'
+    out = subprocess.run(call.split(' '))
+    assert out.returncode == 0
+
