@@ -1,0 +1,12 @@
+diff --git a/inc/fastlm.hpp b/inc/fastlm.hpp
+index c7a6c9ff..19af99f3 100644
+--- a/inc/fastlm.hpp
++++ b/inc/fastlm.hpp
+@@ -1,6 +1,6 @@
+ #ifndef FASTLM_HPP
+ #define FASTLM_HPP
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <limits>
+ // From RcppEigen
+ class lm

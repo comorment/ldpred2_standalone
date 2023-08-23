@@ -1,0 +1,13 @@
+diff --git a/inc/prsice.hpp b/inc/prsice.hpp
+index 4c2b1e90..aac5ee56 100644
+--- a/inc/prsice.hpp
++++ b/inc/prsice.hpp
+@@ -27,7 +27,7 @@
+ #include "snp.hpp"
+ #include "storage.hpp"
+ #include "thread_queue.hpp"
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <algorithm>
+ #include <atomic>
+ #include <chrono>

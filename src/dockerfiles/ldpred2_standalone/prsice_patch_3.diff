@@ -1,0 +1,13 @@
+diff --git a/inc/genotype.hpp b/inc/genotype.hpp
+index 71b2676d..7b2ec052 100644
+--- a/inc/genotype.hpp
++++ b/inc/genotype.hpp
+@@ -27,7 +27,7 @@
+ #include "snp.hpp"
+ #include "storage.hpp"
+ #include "thread_queue.hpp"
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <algorithm>
+ #include <atomic>
+ #include <cctype>

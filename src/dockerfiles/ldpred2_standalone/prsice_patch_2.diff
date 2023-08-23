@@ -1,0 +1,13 @@
+diff --git a/inc/storage.hpp b/inc/storage.hpp
+index e5c21c1d..697c84f4 100644
+--- a/inc/storage.hpp
++++ b/inc/storage.hpp
+@@ -18,7 +18,7 @@
+ #ifndef PRSICE_INC_STORAGE_HPP_
+ #define PRSICE_INC_STORAGE_HPP_
+ #include "enumerators.h"
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <cstdint>
+ #include <memory>
+ #include <random>

@@ -1,0 +1,12 @@
+diff --git a/inc/family.hpp b/inc/family.hpp
+index 2edd9bf5..e50c5bd9 100644
+--- a/inc/family.hpp
++++ b/inc/family.hpp
+@@ -1,6 +1,6 @@
+ #ifndef FAMILY_HPP
+ #define FAMILY_HPP
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <math.h>
+ class Family
+ {

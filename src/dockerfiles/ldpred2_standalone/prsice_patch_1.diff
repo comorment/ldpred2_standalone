@@ -1,0 +1,30 @@
+diff --git a/inc/misc.hpp b/inc/misc.hpp
+index 12650ba6..5359f2ca 100644
+--- a/inc/misc.hpp
++++ b/inc/misc.hpp
+@@ -38,7 +38,6 @@
+ #include <mach/mach_init.h>
+ #include <mach/mach_types.h>
+ #include <mach/vm_statistics.h>
+-#include <sys/sysctl.h>
+ #elif defined _WIN32
+ #include <windows.h>
+ // psapi must go after windows, or will generate error
+@@ -48,7 +47,6 @@
+ #include "stdlib.h"
+ #include "string.h"
+ #include <sys/param.h>
+-#include <sys/sysctl.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+ #endif
+@@ -86,9 +84,6 @@
+ #include <sys/param.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+-#if defined(BSD)
+-#include <sys/sysctl.h>
+-#endif
+ 
+ #else
+ #error "Unable to define getMemorySize( ) for an unknown OS."

@@ -59,8 +59,15 @@ RUN cd /tmp && \
 
 # PRSice-2 build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
+   unzip=6.0-26ubuntu3.1 \
+   wget=1.21.2-2ubuntu1 \
+   curl=7.81.0-1ubuntu1.13 \
+   node-shasum=1.0.2-3 \
+   libatlas-base-dev=3.10.3-12ubuntu1 \
+   libgslcblas0=2.7.1+dfsg-3 \
    cmake=3.22.1-1ubuntu1.22.04.1 \
-   zlib1g-dev=1:1.2.11.dfsg-2ubuntu9.2 \
+   zlib1g-dev \
+   libctl-dev \
    libeigen3-dev=3.4.0-2ubuntu2 \
    patch=2.7.6-7build2 \
    && \
@@ -69,13 +76,32 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # install PRSice-2
 RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
-    unzip 2.3.5.zip && \
-    cd PRSice-2.3.5 && \
-    mkdir build && \
+    unzip 2.3.5.zip
+
+# copy some patches for clean(er) compilation
+COPY dockerfiles/ldpred2_standalone/prsice_patch_1.diff /tmp/patches/prsice_patch_1.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_2.diff /tmp/patches/prsice_patch_2.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_3.diff /tmp/patches/prsice_patch_3.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_4.diff /tmp/patches/prsice_patch_4.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_5.diff /tmp/patches/prsice_patch_5.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_6.diff /tmp/patches/prsice_patch_6.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_7.diff /tmp/patches/prsice_patch_7.diff
+COPY dockerfiles/ldpred2_standalone/prsice_patch_8.diff /tmp/patches/prsice_patch_8.diff
+
+RUN cd PRSice-2.3.5 && \
+    patch inc/misc.hpp < /tmp/patches/prsice_patch_1.diff && \
+    patch inc/storage.hpp < /tmp/patches/prsice_patch_2.diff && \
+    patch inc/genotype.hpp < /tmp/patches/prsice_patch_3.diff && \
+    patch inc/fastlm.hpp < /tmp/patches/prsice_patch_4.diff && \
+    patch inc/family.hpp < /tmp/patches/prsice_patch_5.diff && \
+    patch inc/glm.hpp < /tmp/patches/prsice_patch_6.diff && \
+    patch inc/regression.hpp < /tmp/patches/prsice_patch_7.diff && \
+    patch inc/prsice.hpp < /tmp/patches/prsice_patch_8.diff && \
+    mkdir build && \    
     cd build && \
     cmake ../ && \
     make && \
-    cp PRSice/bin/PRSice /bin/ && \
+    cp ../bin/PRSice /bin/ && \
     cd /tmp && \
     rm -rf 2.3.5.zip PRSice-2.3.5
 

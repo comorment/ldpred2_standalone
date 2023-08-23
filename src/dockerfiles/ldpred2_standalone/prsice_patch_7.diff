@@ -1,0 +1,13 @@
+diff --git a/inc/regression.hpp b/inc/regression.hpp
+index 9e2a6932..a8033c29 100644
+--- a/inc/regression.hpp
++++ b/inc/regression.hpp
+@@ -22,7 +22,7 @@
+ #include "fastlm.hpp"
+ #include "glm.hpp"
+ #include "misc.hpp"
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <cstdio>
+ #include <fstream>
+ #include <iostream>

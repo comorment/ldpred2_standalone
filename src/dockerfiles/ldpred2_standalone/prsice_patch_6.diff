@@ -1,0 +1,13 @@
+diff --git a/inc/glm.hpp b/inc/glm.hpp
+index a5ab3b8b..5f30adf9 100644
+--- a/inc/glm.hpp
++++ b/inc/glm.hpp
+@@ -2,7 +2,7 @@
+ #define GLM_HPP
+ #include "dcdflib.h"
+ #include "family.hpp"
+-#include <Eigen/Dense>
++#include <eigen3/Eigen/Dense>
+ #include <iostream>
+ #include <math.h>
+ #include <stdexcept>
