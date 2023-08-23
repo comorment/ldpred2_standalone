@@ -60,7 +60,9 @@ RUN cd /tmp && \
 # PRSice-2 build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
    cmake=3.22.1-1ubuntu1.22.04.1 \
-   zlib1g-dev \
+   zlib1g-dev=1:1.2.11.dfsg-2ubuntu9.2 \
+   libeigen3-dev=3.4.0-2ubuntu2 \
+   patch=2.7.6-7build2 \
    && \
    apt-get clean && \
    rm -rf /var/lib/apt/lists/*
