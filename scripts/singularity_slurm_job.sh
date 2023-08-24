@@ -12,10 +12,10 @@ module load $SINGULARITY_MODULE
 
 export ROOTDIR="$(dirname ${PWD})"
 export SINGULARITY_BIND="$ROOTDIR/reference:/REF:ro"  # mount reference directory as /REF
-export SIF=${ROOTDIR}/singularity
-export PYTHON="singularity exec --home=$PWD:/home --cleanenv $SIF/ldpred2_standalone.sif python"
+export SIF=${ROOTDIR}/containers
+export R="singularity exec --home=$PWD:/home --cleanenv $SIF/ldpred2.sif R"
+export RSCRIPT="singularity exec --home=$PWD:/home --cleanenv $SIF/ldpred2.sif Rscript"
 
 # Run some commands
-$PYTHON --version  # print version
-$PYTHON -c "print('hello ldpred2_standalone')"  # run a command
-$PYTHON hello_world.py # run a script
+$R --version  # print version
+$RSCRIPT --version  # print version
