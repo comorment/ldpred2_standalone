@@ -23,11 +23,12 @@ RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagema
     R -e "install.packages('argparser', version='0.7.1', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
     R -e "install.packages('bigsnpr', version='1.11.6', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
     R -e "install.packages('data.table', version='1.14.6', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('stringi', version='1.7.12', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+    R -e "install.packages('optparse', version='1.7.3', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
     R -e "install.packages('stringr', version='1.5.0', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
     R -e "install.packages('R.utils', version='2.12.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
     R -e "install.packages('tidyverse', version='1.3.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))"
-
+# R -e "install.packages('stringi', version='1.7.12', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
+        
 # install plink 2
 RUN apt-get update && apt-get install -y --no-install-recommends \
    plink2=2.00~a3-220218+dfsg-1 \
@@ -80,14 +81,14 @@ RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/r
     unzip 2.3.5.zip
 
 # copy some patches for clean(er) compilation
-COPY dockerfiles/ldpred2_standalone/prsice_patch_1.diff /tmp/patches/prsice_patch_1.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_2.diff /tmp/patches/prsice_patch_2.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_3.diff /tmp/patches/prsice_patch_3.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_4.diff /tmp/patches/prsice_patch_4.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_5.diff /tmp/patches/prsice_patch_5.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_6.diff /tmp/patches/prsice_patch_6.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_7.diff /tmp/patches/prsice_patch_7.diff
-COPY dockerfiles/ldpred2_standalone/prsice_patch_8.diff /tmp/patches/prsice_patch_8.diff
+COPY patches/prsice_patch_1.diff /tmp/patches/prsice_patch_1.diff
+COPY patches/prsice_patch_2.diff /tmp/patches/prsice_patch_2.diff
+COPY patches/prsice_patch_3.diff /tmp/patches/prsice_patch_3.diff
+COPY patches/prsice_patch_4.diff /tmp/patches/prsice_patch_4.diff
+COPY patches/prsice_patch_5.diff /tmp/patches/prsice_patch_5.diff
+COPY patches/prsice_patch_6.diff /tmp/patches/prsice_patch_6.diff
+COPY patches/prsice_patch_7.diff /tmp/patches/prsice_patch_7.diff
+COPY patches/prsice_patch_8.diff /tmp/patches/prsice_patch_8.diff
 
 RUN cd PRSice-2.3.5 && \
     patch inc/misc.hpp < /tmp/patches/prsice_patch_1.diff && \

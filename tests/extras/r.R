@@ -1,11 +1,16 @@
-# test script checking that all installed libraries are present
-
+# test script checking that all installed/required libraries are present
 library(argparser)
 library(bigreadr)
 library(bigsnpr)
 library(devtools)
 library(data.table)
+library(dplyr)
+library(ggplot2)
+library(grDevices)
+library(methods)
+library(optparse)
 library(R.utils)
-library(stringi)
+library(RColorBrewer)
 library(stringr)
 library(tidyverse)
+library(tools)

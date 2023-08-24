@@ -1,4 +1,4 @@
-all: ldpred2_standalone.sif  # additional .sif files may be listed here for corresponding dockerfiles
+all: ldpred2.sif  # additional .sif files may be listed here for corresponding dockerfiles
 
 %.sif: dockerfiles/%/Dockerfile
 	docker build -t $* -f dockerfiles/$*/Dockerfile . && \

@@ -17,3 +17,6 @@ _build
 
 # VSCode
 .vscode
+
+# PRSice
+scripts/PRSice2/lib

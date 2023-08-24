@@ -1,25 +1,19 @@
-# ldpred2_standalone project
+# LDpred2 standalone
 
-README info goes here. Modify for your own project's needs.
+Software container build(s) and utilities for computing polygenic scores (PGS), based on our main development repository [CoMorMent/Containers](https://github.com/comorment/containers)
 
-# Important! - post initial setup steps
+## Obtaining these files
 
-After setting up project from the template, add files, commit and push the changes after running the setup script (`scripts/init.py`):
+To use these files and codes, [clone](https://github.com/comorment/ldpred2_standalone) this repository by pressing that green [![Code](https://img.shields.io/badge/Code-green.svg)](https://github.com/comorment/ldpred2_standalone) button above and follow the instructions.
+
+This repository also uses [git LFS](https://git-lfs.com) for large, non-code files.
+After cloning the repository, initialize git LFS locally by issuing in the terminal:
 
 ```
-git add <file1> <file2> ...
-git commit -a -m "initial setup"
-git push
+cd </path/to/>ldpred2_standalone
+git lfs install
+git pull
 ```
-
-The remaining codes may then be added to and be modified further to suit the requirements of the `<ldpred2_standalone>` project. 
-
-# Important! - Set up Git LFS
-
-Container files may get large and one should never add large binary files (.sif, .zip, .tar.gz, .mat, .dat, etc.) in [git](https://git-scm.com) repositories directly, mainly files that can be parsed as raw text files (code files, etc.).
-[**Git Large File Storage** (LFS)](https://git-lfs.github.com) should be used instead.
-Before adding new files to this project after initialization (running `python scripts/init.py`), go through step 1-3 on the Git LFS [homepage](https://git-lfs.github.com).
-Revise the `<ldpred2_standalone>/.gitattributes` file as necessary. Some common file formats has been added already.
 
 ## Build status
 
@@ -30,7 +24,12 @@ Revise the `<ldpred2_standalone>/.gitattributes` file as necessary. Some common 
 
 ## Description of available containers
 
-* ``ldpred2_standalone`` - a hello-world introductory container setup
+* ``ldpred2.sif`` - a minimal Singularity container with R based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/).
+
+
+## Using
+
+
 
 ## Software versions
 
@@ -39,14 +38,17 @@ Please keep up to date (and update the main `<ldpred2_standalone>/README.md` whe
   
 ### ldpred2_standalone.sif
   
-| OS/tool             | Version               | License           | Source
-| ------------------- | --------------------- | ----------------- | -------------
-| ubuntu              | 20.04                 | [Creative Commons CC-BY-SA version 3.0 UK licence](https://ubuntu.com/legal/intellectual-property-policy) | [Ubuntu.com](https://ubuntu.com)
-| python              | 3.8.10                | [PSF](https://docs.python.org/3.10/license.html) | [Python.org](https://www.python.org)
+| OS/tool               | Version/Git tag               | License           | Source
+| --------------------- | ----------------------------- | ----------------- | -------------
+| Ubuntu                | 22.04 (LTS)                   | [Creative Commons CC-BY-SA version 3.0 UK licence](https://ubuntu.com/legal/intellectual-property-policy) | [Ubuntu.com](https://ubuntu.com) |
+| Rocker/r-ver          | 3.2.1                         | [GPL](https://github.com/rocker-org/rocker-versioned2/blob/master/LICENSE) | [rocker-project.org](https://rocker-project.org)
+| R                     | 4.3.1 (2023-06-16)            | [GPL-*](https://www.r-project.org/Licenses/) | [r-project.org](https://www.r-project.org) |
+| PLINK-1.9             | [v2.00a4.5](https://github.com/chrchang/plink-ng/releases/tag/v2.00a4.5)  | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/1.9/LICENSE) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
+| PLINK-2.0             | 2.00~a3-220218+dfsg-1         | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/2.0/COPYING) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
 
 ## Building/rebuilding containers
 
-For instructions on how to build or rebuild containers using [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) refer to [`<ldpred2_standalone>/src/README.md`](https://github.com/comorment/ldpred2_standalone/blob/main/src/README.md).
+For instructions on how to build or rebuild containers using [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) refer to [`<ldpred2_standalone>/docker/README.md`](https://github.com/comorment/ldpred2_standalone/blob/main/docker/README.md).
 
 ## Build the documentation
 
