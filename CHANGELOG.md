@@ -22,20 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - removals goes here
 
-## [MAJOR.MINOR.PATCH] - YYYY-MM-DD
+## [1.0.0rc0] - 2023-08-24
 
 ### Added
 
-- additions goes here
-
-### Updated
-
-- updates goes here
-
-### Fixed
-
-- fixes goes here
-
-### Removed
-
-- removals goes here
+- ``ldpred2.sif`` Singularity container and scripts
