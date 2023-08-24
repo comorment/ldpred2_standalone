@@ -9,13 +9,15 @@ This repository is used to develop and document [Docker](https://www.docker.com)
   Below is the list of tools included in the different Dockerfiles and installer bash scripts for each container.
   Please keep up to date (and update the main `<ldpred2_standalone>/README.md` when pushing new container builds):
 
-### ldpred2_standalone.sif
+### ldpred2.sif
   
-| OS/tool             | Version               | License           | Source
-| ------------------- | --------------------- | ----------------- | -------------
-| ubuntu              | 20.04                 | [Creative Commons CC-BY-SA version 3.0 UK licence](https://ubuntu.com/legal/intellectual-property-policy) | [Ubuntu.com](https://ubuntu.com)
-| Mambaforge          | Mambaforge-22.11.1-4  | [BSD-3-clause](https://github.com/conda-forge/miniforge/blob/main/LICENSE) | [github.com/conda-forge/miniforge](https://github.com/conda-forge/miniforge)
-| python              | 3.10.6                | [PSF](https://docs.python.org/3.10/license.html) | [Python.org](https://www.python.org)
+| OS/tool               | Version/Git tag               | License           | Source
+| --------------------- | ----------------------------- | ----------------- | -------------
+| Ubuntu                | 22.04 (LTS)                   | [Creative Commons CC-BY-SA version 3.0 UK licence](https://ubuntu.com/legal/intellectual-property-policy) | [Ubuntu.com](https://ubuntu.com) |
+| Rocker/r-ver          | 3.2.1                         | [GPL](https://github.com/rocker-org/rocker-versioned2/blob/master/LICENSE) | [rocker-project.org](https://rocker-project.org)
+| R                     | 4.3.1 (2023-06-16)            | [GPL-*](https://www.r-project.org/Licenses/) | [r-project.org](https://www.r-project.org) |
+| PLINK-1.9             | [v2.00a4.5](https://github.com/chrchang/plink-ng/releases/tag/v2.00a4.5)  | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/1.9/LICENSE) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
+| PLINK-2.0             | 2.00~a3-220218+dfsg-1         | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/2.0/COPYING) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
 
 ## Feedback
 
@@ -25,21 +27,21 @@ If you face any issues, or if you need additional software, please let us know b
 
 ### The easy(er) way
 
-For convenience, a `Makefile` is provided in this directory in order to build [Singularity](https://docs.sylabs.io) containers from Dockerfiles (as `<ldpred2_standalone/src/dockerfiles/ldpred2_standalone/Dockerfile>`).
+For convenience, a `Makefile` is provided in this directory in order to build [Singularity](https://docs.sylabs.io) containers from Dockerfiles (as `<ldpred2_standalone/src/dockerfiles/ldpred2/Dockerfile>`).
 Using this files assumes that a working [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) installation, as well as the [`GNU make`](https://www.gnu.org/software/make/) utility is available on the host computer/build system.
 On Debian-based Linux OS, this utility can usually be installed by issuing`apt-get install -y make`; on MacOS with [Homebrew](https://brew.sh) as`brew install make`. Prefix`sudo` if necessary.
 
 Then, the container can be built by issuing:
 
 ```
-make ldpred2_standalone.sif
+make ldpred2.sif
 ```
 
-If all went well, the built file should be located as `<ldpred2_standalone/containers/ldpred2_standalone.sif>`.
+If all went well, the built file should be located as `<ldpred2_standalone/containers/ldpred2.sif>`.
 In case super-user (`sudo`) privileges are required, issue:
 
 ```
-sudo make ldpred2_standalone.sif
+sudo make ldpred2.sif
 ```
 
 ### Manual builds
@@ -47,23 +49,23 @@ sudo make ldpred2_standalone.sif
 In order to build the container manually, this is possible via the following steps
 
 ```
-docker build -t ldpred2_standalone -f dockerfiles/ldpred2_standalone/Dockerfile .  # build docker container
+docker build -t ldpred2 -f dockerfiles/ldpred2/Dockerfile .  # build docker container
 ```
 
 In case you do not want to use Singularity (e.g., for testing locally), the build can be used e.g., by issuing
 
 ```
-docker run -it -p 5001:5001 ldpred2_standalone python --version
+docker run -it -p 5001:5001 ldpred2 R --version
 ```
 
-which should return the currently installed Python version incorporated into the container.
+which should return the currently installed R version incorporated into the container.
 You may replace the port numbers (``5001``) by another (e.g., ``5000``).
 
 To convert, and relocate the Singularity container file generated from the Docker image, issue
 
 ```
-bash scripts/convert_docker_image_to_singularity.sh ldpred2_standalone  # produces ldpred2_standalone.sif
-bash scripts/scripts/move_singularity_file.sh.sh ldpred2_standalone  # put ldpred2_standalone.sif file to <ldpred2_standalone>/containers/ directory
+bash scripts/convert_docker_image_to_singularity.sh ldpred2  # produces ldpred2.sif
+bash scripts/scripts/move_singularity_file.sh.sh ldpred2  # put ldpred2.sif file to <ldpred2_standalone>/containers/ directory
 ```
 
 Again, super-user (`sudo`) privileges may be required on the host computer. In that case, prefix `sudo` on the line(s) that fail.
@@ -114,10 +116,10 @@ cd <ldpred2_standalone>
 py.test -v tests  # with verbose output
 ```
 
-Checks for individual containers (e.g., `ldpred2_standalone.sif`) can be executed by issuing:
+Checks for individual containers (e.g., `ldpred2.sif`) can be executed by issuing:
 
 ```
-py.test -v tests/test_ldpred2_standalone.py
+py.test -v tests/test_ldpred2.py
 ```
 
 Note that the proper container files (*.sif files) corresponding to the different test scripts must exist in `<ldpred2_standalone>/containers/`,

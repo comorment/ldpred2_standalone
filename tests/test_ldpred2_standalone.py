@@ -22,14 +22,14 @@ port = sock.getsockname()[1]
 # If neither are found, tests will not run.
 try:
     pth = os.path.join('containers', 'ldpred2.sif')
-    out = subprocess.run('singularity', check=False)
+    _ = subprocess.run('singularity', check=False)
     cwd = os.getcwd()
     PREFIX = f'singularity run {pth}'
     # PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --no-home --bind {cwd} {pth}'
     PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --home={cwd}:/home/ {pth}'
 except FileNotFoundError:
     try:
-        out = subprocess.run('docker', check=False)
+        _ = subprocess.run('docker', check=False)
         pwd = os.getcwd()
         PREFIX = f'docker run -p {port}:{port} ldpred2'
         PREFIX_MOUNT = (
@@ -48,36 +48,47 @@ def test_assert():
 
 def test_ldpred2_R():
     call = f'{PREFIX} R --version'
-    out = subprocess.run(call.split(' '))
+    out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
 
 def test_ldpred2_Rscript():
     call = f'{PREFIX} Rscript --version'
-    out = subprocess.run(call.split(' '))
+    out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
 
 def test_ldpred2_R_packages():
     pwd = os.getcwd()
     call = f'{PREFIX_MOUNT} Rscript tests/extras/r.R'
-    out = subprocess.run(call.split(' '))
+    out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
 
 def test_ldpred2_bin_prsice():
     call = f'{PREFIX} PRSice --version'
-    out = subprocess.run(call.split(' '))
+    out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
 
 def test_ldpred2_bin_plink():
     call = f'{PREFIX} plink --version'
-    out = subprocess.run(call.split(' '))
+    out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
 
 def test_ldpred2_bin_plink2():
     call = f'{PREFIX} plink2 --version'
-    out = subprocess.run(call.split(' '))
+    out = subprocess.run(call.split(' '), check=True)
+    assert out.returncode == 0
+
+
+def test_ldpred2_Rscript_LDpred2():
+    call = f'{PREFIX_MOUNT} Rscript scripts/LDpred2/ldpred2.R --help'
+    out = subprocess.run(call.split(' '), check=True)
+    assert out.returncode == 0
+
+def test_ldpred2_Rscript_PRSice():
+    call = f'{PREFIX_MOUNT} Rscript scripts/PRSice2/PRSice.R --help'
+    out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0

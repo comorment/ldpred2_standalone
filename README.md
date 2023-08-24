@@ -24,7 +24,7 @@ git pull
 
 ## Description of available containers
 
-* ``ldpred2.sif`` - a minimal Singularity container with R based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/).
+* ``ldpred2.sif`` - a minimal Singularity container with R based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/), and R dependencies for running PGS using [LDpred2](https://privefl.github.io/bigsnpr/articles/LDpred2.html).
 
 
 ## Using
