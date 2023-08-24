@@ -59,8 +59,8 @@ it can be used by issuing:
 
 ```
 $ export CONTAINER=ldpred2
-$ export RSCRIPT="docker run -it --mount type=bind,source=${PWD},target=/home ${CONTAINER} Rscript"
-$ $RSCRIPT /home/ldpred2.R --help
+$ export RSCRIPT="docker run -it --mount type=bind,source=${PWD},target=${PWD} ${CONTAINER} Rscript"
+$ $RSCRIPT $PWD/ldpred2.R --help
 usage: ldpred2.R [--] [--help] [--out-merge] [--geno-impute-zero]
 ...
 ```

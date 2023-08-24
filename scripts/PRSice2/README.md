@@ -59,7 +59,7 @@ it can be used by issuing with the ``PRSice`` binary as:
 
 ```
 $ export CONTAINER=ldpred2
-$ export PRSICE="docker run -it --mount type=bind,source=${PWD},target=/home ${CONTAINER} PRSice"
+$ export PRSICE="docker run -it --mount type=bind,source=${PWD},target=${PWD} ${CONTAINER} PRSice"
 $ $PRSICE --<arg1> --<arg2> ...
 ...
 ```
@@ -69,7 +69,7 @@ And similar with ``PRSice.R`` as:
 ```
 $ export CONTAINER=ldpred2
 $ export RSCRIPT="docker run -it --mount type=bind,source=${PWD},target=/home ${CONTAINER} Rscript"
-$ $RSCRIPT /home/PRSice.R --no-install --<arg1> --<arg2> ...
+$ $RSCRIPT $PWD/PRSice.R --no-install --<arg1> --<arg2> ...
 ```
 
 Note that the ``--no-install`` option is set as the script may try and install additional R packages which should be included the container itself.

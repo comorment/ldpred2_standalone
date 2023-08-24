@@ -89,6 +89,9 @@ def test_ldpred2_Rscript_LDpred2():
     assert out.returncode == 0
 
 def test_ldpred2_Rscript_PRSice():
-    call = f'{PREFIX_MOUNT} Rscript scripts/PRSice2/PRSice.R --help'
+    if PREFIX.rfind('docker') >= 0:
+        call = f'{PREFIX_MOUNT} Rscript {cwd}/scripts/PRSice2/PRSice.R --help'
+    else:
+        call = f'{PREFIX_MOUNT} Rscript scripts/PRSice2/PRSice.R --help'
     out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
