@@ -1,5 +1,5 @@
 # R container
-FROM --platform=linux/amd64 rocker/r-ver:4.3.1
+FROM rocker/r-ver:4.3.1
 
 ENV TZ=Europe
 ENV DEBIAN_FRONTEND noninteractive
@@ -11,6 +11,9 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     apt-utils=2.4.10 \
     ca-certificates=20230311ubuntu0.22.04.1 && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* \
+    && \
     update-ca-certificates
 RUN apt-get install -y --no-install-recommends \
     cmake=3.22.1-1ubuntu1.22.04.1 \
@@ -60,15 +63,6 @@ RUN cd /tmp && \
     rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
 # install PRSice-2
-# copy some patches for clean(er) compilation
-# COPY patches/prsice_patch_1.diff /tmp/patches/prsice_patch_1.diff
-# COPY patches/prsice_patch_2.diff /tmp/patches/prsice_patch_2.diff
-# COPY patches/prsice_patch_3.diff /tmp/patches/prsice_patch_3.diff
-# COPY patches/prsice_patch_4.diff /tmp/patches/prsice_patch_4.diff
-# COPY patches/prsice_patch_5.diff /tmp/patches/prsice_patch_5.diff
-# COPY patches/prsice_patch_6.diff /tmp/patches/prsice_patch_6.diff
-# COPY patches/prsice_patch_7.diff /tmp/patches/prsice_patch_7.diff
-# COPY patches/prsice_patch_8.diff /tmp/patches/prsice_patch_8.diff
 COPY patches/*.diff /tmp/patches/
 
 RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
