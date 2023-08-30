@@ -25,7 +25,6 @@ try:
     _ = subprocess.run('singularity', check=False)
     cwd = os.getcwd()
     PREFIX = f'singularity run {pth}'
-    # PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --no-home --bind {cwd} {pth}'
     PREFIX_MOUNT = PREFIX_MOUNT = f'singularity run --home={cwd}:/home/ {pth}'
 except FileNotFoundError:
     try:
@@ -34,7 +33,8 @@ except FileNotFoundError:
         PREFIX = f'docker run -p {port}:{port} --platform=linux/amd64 ldpred2'
         PREFIX_MOUNT = (
             f'docker run -p {port}:{port} ' +
-            f'--mount type=bind,source={cwd},target={cwd} --platform=linux/amd64 ldpred2')
+            f'--mount type=bind,source={cwd},target={cwd} ' +
+            '--platform=linux/amd64 ldpred2')
     except FileNotFoundError as e:
         raise FileNotFoundError(
             'Neither `singularity` nor `docker` found in PATH.' +
@@ -92,6 +92,7 @@ def test_ldpred2_Rscript_LDpred2():
         call = f'{PREFIX_MOUNT} Rscript scripts/LDpred2/ldpred2.R --help'
     out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
+
 
 def test_ldpred2_Rscript_PRSice():
     if PREFIX.rfind('docker') >= 0:
