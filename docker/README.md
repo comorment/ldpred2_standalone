@@ -17,7 +17,7 @@ This repository is used to develop and document [Docker](https://www.docker.com)
 | Rocker/r-ver          | 3.2.1                         | [GPL](https://github.com/rocker-org/rocker-versioned2/blob/master/LICENSE) | [rocker-project.org](https://rocker-project.org)
 | R                     | 4.3.1 (2023-06-16)            | [GPL-*](https://www.r-project.org/Licenses/) | [r-project.org](https://www.r-project.org) |
 | PLINK-1.9             | [v2.00a4.5](https://github.com/chrchang/plink-ng/releases/tag/v2.00a4.5)  | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/1.9/LICENSE) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
-| PLINK-2.0             | 2.00~a3-220218+dfsg-1         | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/2.0/COPYING) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
+| PLINK-2.0             | [v2.00a4.5](https://github.com/chrchang/plink-ng/releases/tag/v2.00a4.5)        | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/2.0/COPYING) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
 
 ## Feedback
 
