@@ -7,15 +7,14 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /tmp/
 
 # some system dependencies
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     apt-utils=2.4.10 \
     ca-certificates=20230311ubuntu0.22.04.1 && \
     apt-get clean && \
-    rm -rf /var/lib/apt/lists/* \
-    && \
+    rm -rf /var/lib/apt/lists/* && \
     update-ca-certificates
-RUN apt-get install -y --no-install-recommends \
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
     cmake=3.22.1-1ubuntu1.22.04.1 \
     curl=7.81.0-1ubuntu1.13 \
     libatlas-base-dev=3.10.3-12ubuntu1 \
@@ -43,8 +42,7 @@ RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagema
     R -e "install.packages('tidyverse', version='1.3.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))"
         
 # install plink 1.9
-RUN cd /tmp && \
-    wget --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
+RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
     unzip v2.00a4.5.zip && \
     cd plink-ng-2.00a4.5/1.9 && \
     ./plink_first_compile && \
@@ -53,8 +51,7 @@ RUN cd /tmp && \
     rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
 # install plink 2
-RUN cd /tmp && \
-    wget --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
+RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
     unzip v2.00a4.5.zip && \
     cd plink-ng-2.00a4.5/2.0 && \
     make -j && \
@@ -65,7 +62,7 @@ RUN cd /tmp && \
 # install PRSice-2
 COPY patches/*.diff /tmp/patches/
 
-RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
+RUN wget -q --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
     unzip 2.3.5.zip && \
     cd PRSice-2.3.5 && \
     patch inc/misc.hpp < /tmp/patches/prsice_patch_1.diff && \
