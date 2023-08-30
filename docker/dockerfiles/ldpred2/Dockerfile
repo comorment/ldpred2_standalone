@@ -1,5 +1,5 @@
 # R container
-FROM rocker/r-ver:4.3.1
+FROM --platform=linux/amd64 rocker/r-ver:4.3.1
 
 ENV TZ=Europe
 ENV DEBIAN_FRONTEND noninteractive
@@ -7,16 +7,27 @@ ENV DEBIAN_FRONTEND noninteractive
 WORKDIR /tmp/
 
 # some system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends apt-utils=2.4.10 && \
-    apt-get update && apt-get install -y --no-install-recommends ca-certificates=20230311ubuntu0.22.04.1 && \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    apt-utils=2.4.10 \
+    ca-certificates=20230311ubuntu0.22.04.1 && \
     update-ca-certificates
-RUN apt-get update && apt-get install -y --no-install-recommends \
-   unzip=6.0-26ubuntu3.1 \
-   wget=1.21.2-2ubuntu1 \
-   libicu-dev=70.1-2 \
-   && \
-   apt-get clean && \
-   rm -rf /var/lib/apt/lists/*
+RUN apt-get install -y --no-install-recommends \
+    cmake=3.22.1-1ubuntu1.22.04.1 \
+    curl=7.81.0-1ubuntu1.13 \
+    libatlas-base-dev=3.10.3-12ubuntu1 \
+    libctl-dev=4.5.1-1 \
+    libeigen3-dev=3.4.0-2ubuntu2 \
+    libgslcblas0=2.7.1+dfsg-3 \
+    libicu-dev=70.1-2 \
+    node-shasum=1.0.2-3 \
+    patch=2.7.6-7build2 \
+    unzip=6.0-26ubuntu3.1 \
+    wget=1.21.2-2ubuntu1 \
+    zlib1g-dev=1:1.2.11.dfsg-2ubuntu9.2 \
+    && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # R dependencies
 RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
@@ -28,26 +39,6 @@ RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagema
     R -e "install.packages('R.utils', version='2.12.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
     R -e "install.packages('tidyverse', version='1.3.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))"
         
-# install plink 2
-RUN apt-get update && apt-get install -y --no-install-recommends \
-   plink2=2.00~a3-220218+dfsg-1 \
-   && \
-   apt-get clean && \
-   rm -rf /var/lib/apt/lists/*
-
-# install plink 1.9 deps
-RUN apt-get update && apt-get install -y --no-install-recommends \
-   curl=7.81.0-1ubuntu1.13 \
-   node-shasum=1.0.2-3 \
-   libatlas-base-dev=3.10.3-12ubuntu1 \
-   libgslcblas0=2.7.1+dfsg-3 \
-   && \
-   apt-get clean && \
-   rm -rf /var/lib/apt/lists/*
-
-# create alias shasum -> sha1sum
-RUN ln -s /usr/bin/sha1sum /usr/bin/shasum
-
 # install plink 1.9
 RUN cd /tmp && \
     wget --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
@@ -58,38 +49,31 @@ RUN cd /tmp && \
     cd /tmp && \
     rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
-# PRSice-2 build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-   unzip=6.0-26ubuntu3.1 \
-   wget=1.21.2-2ubuntu1 \
-   curl=7.81.0-1ubuntu1.13 \
-   node-shasum=1.0.2-3 \
-   libatlas-base-dev=3.10.3-12ubuntu1 \
-   libgslcblas0=2.7.1+dfsg-3 \
-   cmake=3.22.1-1ubuntu1.22.04.1 \
-   zlib1g-dev \
-   libctl-dev \
-   libeigen3-dev=3.4.0-2ubuntu2 \
-   patch=2.7.6-7build2 \
-   && \
-   apt-get clean && \
-   rm -rf /var/lib/apt/lists/*
+# install plink 2
+RUN cd /tmp && \
+    wget --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
+    unzip v2.00a4.5.zip && \
+    cd plink-ng-2.00a4.5/2.0 && \
+    make -j && \
+    cp $PWD/bin/* /bin/ && \
+    cd /tmp && \
+    rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
 # install PRSice-2
-RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
-    unzip 2.3.5.zip
-
 # copy some patches for clean(er) compilation
-COPY patches/prsice_patch_1.diff /tmp/patches/prsice_patch_1.diff
-COPY patches/prsice_patch_2.diff /tmp/patches/prsice_patch_2.diff
-COPY patches/prsice_patch_3.diff /tmp/patches/prsice_patch_3.diff
-COPY patches/prsice_patch_4.diff /tmp/patches/prsice_patch_4.diff
-COPY patches/prsice_patch_5.diff /tmp/patches/prsice_patch_5.diff
-COPY patches/prsice_patch_6.diff /tmp/patches/prsice_patch_6.diff
-COPY patches/prsice_patch_7.diff /tmp/patches/prsice_patch_7.diff
-COPY patches/prsice_patch_8.diff /tmp/patches/prsice_patch_8.diff
+# COPY patches/prsice_patch_1.diff /tmp/patches/prsice_patch_1.diff
+# COPY patches/prsice_patch_2.diff /tmp/patches/prsice_patch_2.diff
+# COPY patches/prsice_patch_3.diff /tmp/patches/prsice_patch_3.diff
+# COPY patches/prsice_patch_4.diff /tmp/patches/prsice_patch_4.diff
+# COPY patches/prsice_patch_5.diff /tmp/patches/prsice_patch_5.diff
+# COPY patches/prsice_patch_6.diff /tmp/patches/prsice_patch_6.diff
+# COPY patches/prsice_patch_7.diff /tmp/patches/prsice_patch_7.diff
+# COPY patches/prsice_patch_8.diff /tmp/patches/prsice_patch_8.diff
+COPY patches/*.diff /tmp/patches/
 
-RUN cd PRSice-2.3.5 && \
+RUN wget --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
+    unzip 2.3.5.zip && \
+    cd PRSice-2.3.5 && \
     patch inc/misc.hpp < /tmp/patches/prsice_patch_1.diff && \
     patch inc/storage.hpp < /tmp/patches/prsice_patch_2.diff && \
     patch inc/genotype.hpp < /tmp/patches/prsice_patch_3.diff && \
@@ -101,7 +85,7 @@ RUN cd PRSice-2.3.5 && \
     mkdir build && \    
     cd build && \
     cmake ../ && \
-    make && \
+    make -j && \
     cp ../bin/PRSice /bin/ && \
     cd /tmp && \
     rm -rf 2.3.5.zip PRSice-2.3.5

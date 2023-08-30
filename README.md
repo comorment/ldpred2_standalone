@@ -29,7 +29,7 @@ git pull
 
 ## Using
 
-
+Please refer to the scripts and README files in [scripts](https://github.com/comorment/ldpred2_standalone/tree/main/scripts/) directory for usage
 
 ## Software versions
 
@@ -62,7 +62,7 @@ conda activate sphinx  # activates environment "sphinx
 make html  # builds html documentation into _build/html/ subdirectory
 ```
 
-The built documentation can be viewed locally in a web browser by opening the file 
+The built documentation can be viewed locally in a web browser by opening the file
 `<ldpred2_standalone>/docs/source/_build/html/index.html`
 
 The documentation may also be hosted online on [readthedocs.org](https://readthedocs.org).

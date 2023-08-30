@@ -38,3 +38,7 @@ PLINK v1.90p 64-bit (13 Feb 2023)
 ```
 
 and similar for the ``plink2`` binary.
+
+### MacOS Notes
+
+If running Docker on MacOS with a modern M1/M2 chip, include `--platform linux/amd64` in the `docker run` command (and similar) to execute the container for the correct architecture.

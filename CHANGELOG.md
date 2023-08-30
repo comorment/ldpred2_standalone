@@ -12,11 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Updated
 
-- updates goes here
+- Updated Dockerfile compiling PLINK-2.0 inplace
 
 ### Fixed
 
-- fixes goes here
+- `plink2` binary now works on Macs w. M1/M2 CPUs
 
 ### Removed
 

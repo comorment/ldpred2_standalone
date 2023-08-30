@@ -73,3 +73,7 @@ $ $RSCRIPT $PWD/PRSice.R --no-install --<arg1> --<arg2> ...
 ```
 
 Note that the ``--no-install`` option is set as the script may try and install additional R packages which should be included the container itself.
+
+#### MacOS Notes
+
+If running Docker on MacOS with a modern M1/M2 chip, include `--platform linux/amd64` in the `docker run` command (and similar) to execute the container for the correct architecture.

@@ -30,11 +30,11 @@ try:
 except FileNotFoundError:
     try:
         _ = subprocess.run('docker', check=False)
-        pwd = os.getcwd()
-        PREFIX = f'docker run -p {port}:{port} ldpred2'
+        cwd = os.getcwd()
+        PREFIX = f'docker run -p {port}:{port} --platform=linux/amd64 ldpred2'
         PREFIX_MOUNT = (
             f'docker run -p {port}:{port} ' +
-            f'--mount type=bind,source={pwd},target={pwd} ldpred2')
+            f'--mount type=bind,source={cwd},target={cwd} --platform=linux/amd64 ldpred2')
     except FileNotFoundError as e:
         raise FileNotFoundError(
             'Neither `singularity` nor `docker` found in PATH.' +
@@ -59,8 +59,10 @@ def test_ldpred2_Rscript():
 
 
 def test_ldpred2_R_packages():
-    pwd = os.getcwd()
-    call = f'{PREFIX_MOUNT} Rscript tests/extras/r.R'
+    if PREFIX.rfind('docker') >= 0:
+        call = f'{PREFIX_MOUNT} Rscript {cwd}/tests/extras/r.R'
+    else:
+        call = f'{PREFIX_MOUNT} Rscript tests/extras/r.R'
     out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
@@ -84,7 +86,10 @@ def test_ldpred2_bin_plink2():
 
 
 def test_ldpred2_Rscript_LDpred2():
-    call = f'{PREFIX_MOUNT} Rscript scripts/LDpred2/ldpred2.R --help'
+    if PREFIX.rfind('docker') >= 0:
+        call = f'{PREFIX_MOUNT} Rscript {cwd}/scripts/LDpred2/ldpred2.R --help'
+    else:
+        call = f'{PREFIX_MOUNT} Rscript scripts/LDpred2/ldpred2.R --help'
     out = subprocess.run(call.split(' '), check=True)
     assert out.returncode == 0
 
