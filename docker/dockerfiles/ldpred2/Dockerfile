@@ -45,9 +45,9 @@ RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagema
 RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
     unzip v2.00a4.5.zip
 
-WORKDIR /tmp/plink-ng-2.00a4.5/1.9 && \
-    ./plink_first_compile && \
-    cp plink /bin
+WORKDIR /tmp/plink-ng-2.00a4.5/1.9
+RUN ./plink_first_compile && \
+    cp plink /bin/
 
 # install plink 2
 WORKDIR /tmp/plink-ng-2.00a4.5/2.0
