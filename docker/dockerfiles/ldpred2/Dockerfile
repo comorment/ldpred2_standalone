@@ -43,29 +43,28 @@ RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagema
         
 # install plink 1.9
 RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
-    unzip v2.00a4.5.zip && \
-    cd plink-ng-2.00a4.5/1.9 && \
+    unzip v2.00a4.5.zip
+
+WORKDIR /tmp/plink-ng-2.00a4.5/1.9 && \
     ./plink_first_compile && \
-    cp plink /bin && \
-    cd /tmp && \
-    rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
+    cp plink /bin
 
 # install plink 2
-RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
-    unzip v2.00a4.5.zip && \
-    cd plink-ng-2.00a4.5/2.0 && \
-    make -j && \
-    cp $PWD/bin/* /bin/ && \
-    cd /tmp && \
-    rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
+WORKDIR /tmp/plink-ng-2.00a4.5/2.0
+RUN make -j && \
+    cp "${PWD}"/bin/* /bin/
+
+# clean up
+WORKDIR /tmp
+RUN rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
 # install PRSice-2
 COPY patches/*.diff /tmp/patches/
-
 RUN wget -q --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
-    unzip 2.3.5.zip && \
-    cd PRSice-2.3.5 && \
-    patch inc/misc.hpp < /tmp/patches/prsice_patch_1.diff && \
+    unzip 2.3.5.zip
+
+WORKDIR /tmp/PRSice-2.3.5
+RUN patch inc/misc.hpp < /tmp/patches/prsice_patch_1.diff && \
     patch inc/storage.hpp < /tmp/patches/prsice_patch_2.diff && \
     patch inc/genotype.hpp < /tmp/patches/prsice_patch_3.diff && \
     patch inc/fastlm.hpp < /tmp/patches/prsice_patch_4.diff && \
@@ -73,13 +72,15 @@ RUN wget -q --no-check-certificate https://github.com/choishingwan/PRSice/archiv
     patch inc/glm.hpp < /tmp/patches/prsice_patch_6.diff && \
     patch inc/regression.hpp < /tmp/patches/prsice_patch_7.diff && \
     patch inc/prsice.hpp < /tmp/patches/prsice_patch_8.diff && \
-    mkdir build && \    
-    cd build && \
-    cmake ../ && \
+    mkdir build
+
+WORKDIR /tmp/PRSice-2.3.5/build
+RUN cmake ../ && \
     make -j && \
-    cp ../bin/PRSice /bin/ && \
-    cd /tmp && \
-    rm -rf 2.3.5.zip PRSice-2.3.5
+    cp ../bin/PRSice /bin/
+    
+WORKDIR /tmp 
+RUN rm -rf 2.3.5.zip PRSice-2.3.5
 
 # clean up
 RUN rm -rf /tmp/*
