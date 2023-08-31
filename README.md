@@ -29,22 +29,12 @@ git pull
 
 ## Using
 
-
+Please refer to the scripts and README files in [scripts](https://github.com/comorment/ldpred2_standalone/tree/main/scripts/) directory for usage
 
 ## Software versions
 
-Below is the list of tools included in the different Dockerfile(s) and installer bash scripts for each container.
-Please keep up to date (and update the main `<ldpred2_standalone>/README.md` when pushing new container builds):
-  
-### ldpred2_standalone.sif
-  
-| OS/tool               | Version/Git tag               | License           | Source
-| --------------------- | ----------------------------- | ----------------- | -------------
-| Ubuntu                | 22.04 (LTS)                   | [Creative Commons CC-BY-SA version 3.0 UK licence](https://ubuntu.com/legal/intellectual-property-policy) | [Ubuntu.com](https://ubuntu.com) |
-| Rocker/r-ver          | 3.2.1                         | [GPL](https://github.com/rocker-org/rocker-versioned2/blob/master/LICENSE) | [rocker-project.org](https://rocker-project.org)
-| R                     | 4.3.1 (2023-06-16)            | [GPL-*](https://www.r-project.org/Licenses/) | [r-project.org](https://www.r-project.org) |
-| PLINK-1.9             | [v2.00a4.5](https://github.com/chrchang/plink-ng/releases/tag/v2.00a4.5)  | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/1.9/LICENSE) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
-| PLINK-2.0             | 2.00~a3-220218+dfsg-1         | [GPL-3](https://github.com/chrchang/plink-ng/blob/master/2.0/COPYING) | [https://www.cog-genomics.org/plink/](https://www.cog-genomics.org/plink/) |
+This [table](https://github.com/comorment/ldpred2_standalone/tree/main/docker#ldpred2sif) contains the list of tools included in the different Dockerfile(s) and installer bash scripts for each container.
+Please keep up to date when pushing new container builds:
 
 ## Building/rebuilding containers
 
@@ -62,7 +52,7 @@ conda activate sphinx  # activates environment "sphinx
 make html  # builds html documentation into _build/html/ subdirectory
 ```
 
-The built documentation can be viewed locally in a web browser by opening the file 
+The built documentation can be viewed locally in a web browser by opening the file
 `<ldpred2_standalone>/docs/source/_build/html/index.html`
 
 The documentation may also be hosted online on [readthedocs.org](https://readthedocs.org).
