@@ -1,16 +1,30 @@
 # test script checking that all installed/required libraries are present
-library(argparser)
-library(bigreadr)
-library(bigsnpr)
-library(devtools)
-library(data.table)
-library(dplyr)
-library(ggplot2)
-library(grDevices)
-library(methods)
-library(optparse)
-library(R.utils)
-library(RColorBrewer)
-library(stringr)
-library(tidyverse)
-library(tools)
+
+# Load the testthat package
+library(testthat)
+
+# List of libraries to check
+libraries_to_check <- c(
+    "argparser",
+    "bigreadr",
+    "bigsnpr",
+    "devtools",
+    "data.table",
+    "dplyr",
+    "ggplot2",
+    "grDevices",
+    "methods",
+    "optparse",
+    "R.utils",
+    "RColorBrewer",
+    "stringr",
+    "tidyverse",
+    "tools"
+    )
+
+# Define a test
+test_that("Required libraries are installed", {
+  missing_libraries <- setdiff(libraries_to_check, installed.packages()[, "Package"])
+  expect_true(length(missing_libraries) == 0, 
+              sprintf("Missing libraries: %s", paste(missing_libraries, collapse = ", ")))
+})
