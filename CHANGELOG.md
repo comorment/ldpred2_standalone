@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Updated
 
+- use `testthat` for checking R package installation
 - Updated Dockerfile compiling PLINK-2.0 inplace
 
 ### Fixed
