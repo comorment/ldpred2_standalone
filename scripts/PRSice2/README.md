@@ -11,7 +11,6 @@ Minimal example using:
 ### Singularity
 
 Invoking the ``PRSice`` binary:
-```
 
 ```
 $ export CONTAINER=<path/to/ldpred2_standalone>/containers/ldpred2.sif
