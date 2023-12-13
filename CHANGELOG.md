@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Updated
 
+- updated LDpred2 R scripts (SHA: d882dd9cbefd457d1f14f2e7d8ed91fdabd08937 of github.com/comorment/containers)
 - use `testthat` for checking R package installation
 - Updated Dockerfile compiling PLINK-2.0 inplace
 
