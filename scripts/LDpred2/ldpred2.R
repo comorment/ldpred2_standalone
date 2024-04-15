@@ -159,18 +159,15 @@ map_ldref <- readRDS(fileMetaLD)
 
 # rename pos column in map_ldref if another genomic build is assumed:
 if (!parsed$genomic_build %in% c('hg18', 'hg19', 'hg38')) stop('Genomic build should be one of "hg19", "hg18", "hg38"')
-if (parsed$genomic_build == 'hg_38') {
+if (parsed$genomic_build == 'hg38') {
   cat('Renaming "pos_hg38" column in LD reference meta info as "pos"\n')
   map_ldref$pos <- map_ldref$pos_hg38
   map_ldref$pos_hg38 <- NULL
-} else if (parsed$genomic_build == 'hg_18') {
+} else if (parsed$genomic_build == 'hg18') {
   cat('Renaming "pos_hg18" column in LD reference meta info as "pos"\n')
   map_ldref$pos <- map_ldref$pos_hg18
   map_ldref$pos_hg18 <- NULL
-} else {
-  # pass
 }
-
 
 cat('\n### Reading summary statistics', fileSumstats,'\n')
 sumstats <- bigreadr::fread2(fileSumstats)
@@ -219,12 +216,8 @@ if (!is.na(colN)) colN <- tolower(colN)
 sumstats$n_eff <- getEffectiveSampleSize(sumstats, effectiveSampleSize=argEffectiveSampleSize, cases=argNCases, controls=argNControls, colES=colN)
 
 if (!is.na(fileKeepSNPs)) {
-  cat('Filtering SNPs using', fileKeepSNPs, '\n')
-  keepSNPs <- read.table(fileKeepSNPs)
-  nSNPsBefore <- nrow(sumstats)
-  sumstats <- sumstats[sumstats$rsid %in% keepSNPs[,1],]
-  nSNPsAfter <- nrow(sumstats)
-  cat('Retained', nSNPsAfter, 'out of', nSNPsBefore,'\n')
+  cat('Filtering sumstats by SNPs using', fileKeepSNPs, '\n')
+  sumstats <- filterFromFile(sumstats, fileKeepSNPs, colFilter='rsid')
 }
 
 # If the statistic is an OR, convert it into a log-OR
@@ -309,10 +302,7 @@ if (argLdpredMode == 'inf') {
   )
   ggsave(plt, file=fileOutputPlot)
   cat('Filtering chains\n')
-  range <- sapply(multi_auto, function(auto) diff(range(auto$corr_est)))
-  # Keep chains that pass the filtering below
-  keep <- (range > (0.95 * quantile(range, 0.95)))
-  beta <- rowMeans(sapply(multi_auto[keep], function (auto) auto$beta_est))
+  beta <- getBetasAuto(multi_auto)
 }
 
 cat('Scoring all individuals...\n')

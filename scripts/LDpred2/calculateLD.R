@@ -15,7 +15,7 @@ source(paste0(dirScript, '/fun.R'))
 par <- arg_parser('Calculate linkage disequillibrium (LD) using bigSNPr')
 # Mandatory arguments
 par <- add_argument(par, "--geno-file-rds", nargs=1, help="Input .rds (bigSNPR) file with genotypes")
-par <- add_argument(par, "--file-ld-blocks", nargs=1, default="LD_with_blocks_chr@.rds", help="Template name of output files using @ to indicate chromosome nr")
+par <- add_argument(par, "--file-ld-chr", nargs=1, default="LD_chr@.rds", help="Template name of output files using @ to indicate chromosome nr")
 par <- add_argument(par, "--file-ld-map", nargs=1, default="map.rds", help="Name of outputted LD map file")
 # Directories
 par <- add_argument(par, "--dir-genetic-maps", default=tempdir(), 
@@ -27,20 +27,30 @@ par <- add_argument(par, "--sample-seed", nargs=1, help="Set a seed for reproduc
 par <- add_argument(par, "--chr2use", nargs=Inf, help="List of chromosomes to use (by default it uses chromosomes 1 to 22)")
 par <- add_argument(par, "--sumstats", nargs=2, help="Input file with GWAS summary statistics. First argument is the file, second is RSID column position (integer) or name.")
 par <- add_argument(par, "--extract", help="File with RSIDs of SNPs to extract from summary statistics")
+par <- add_argument(par, "--extract-individuals", help="File with individual identifiers to extract from genotype data")
 par <- add_argument(par, "--window-size", default=3, nargs=1, help="Window size in centimorgans, used for LD calculation")
 par <- add_argument(par, "--thres-r2", default=0.01, nargs=1, help="Threshold to restrict included SNPs in LD calculations")
 par <- add_argument(par, "--cores", default=nb_cores(), nargs=1, help="Specify the number of processor cores to use, otherwise use the available - 1")
 
 parsed <- parse_args(par)
-fileLDBlocks <- parsed$file_ld_blocks
-if (!dir.exists(dirname(fileLDBlocks))) dir.create(dirname(fileLDBlocks))
+fileLDChr <- parsed$file_ld_chr
+if (!dir.exists(dirname(fileLDChr))) dir.create(dirname(fileLDChr))
 fileLDMap <- parsed$file_ld_map
 fileKeepSNPs <- parsed$extract
 # Sumstats file
 fileSumstats <- parsed$sumstats[1]
 columnRsidSumstats <- parsed$sumstats[2]
-# Sample individuals
+# Check extract individuals
+extractIndividuals <- parsed$extract_individuals
+if (!is.na(extractIndividuals)) {
+  if (!file.exists(extractIndividuals)) stop('--extract-individuals: Could not find file ', extractIndividuals)
+}
+# Check sample individuals
 sampleIndividuals <- parsed$sample_individuals
+if (!is.na(sampleIndividuals)) {
+  sampleIndividuals <- as.numeric(sampleIndividuals)
+  if (!is.numeric(sampleIndividuals)) stop('--sample-individuals needs to be numeric, got ', sampleIndividuals)
+}
 sampleSeed <- parsed$sample_seed
 if (!is.na(sampleSeed) & !isNumeric(sampleSeed)) stop('--sample-seed must be numeric, got ', sampleSeed)
 
@@ -74,35 +84,38 @@ MAP <- obj.bigSNP$map
 GD <- snp_asGeneticPos(CHR, POS, dir=dirGeneticMaps, type=argGeneticMapsType, ncores=NCORES)
 if (is.null(GD)) stop('Genetic distance is not available')
 MAP <- MAP[,c('chromosome', 'marker.ID', 'physical.pos', 'allele1', 'allele2')]
-colnames(MAP) <- c('chr', 'rsid', 'pos', 'a1', 'a0')
 
-SNPs <- MAP$rsid
-if (!is.na(fileKeepSNPs)) {
-  cat('Reading SNPs from --file-keep-snps:', fileKeepSNPs, '\n')
-  keepSNPs <- read.table(fileKeepSNPs)[,1]
-  cat('Read', length(keepSNPs), 'SNPs\n')
-  SNPs <- SNPs[SNPs %in% keepSNPs]
-}
-if (!is.na(fileSumstats)) {
-  cat('Reading SNPs from sumstat file --sumstats:', fileSumstats, '\n')
-  dfSumStats <- data.table::fread(fileSumstats, sep="auto", data.table=F)
-  cat('Read', nrow(dfSumStats), 'SNPs\n')
-  SNPs <- SNPs[SNPs %in% dfSumStats[,columnRsidSumstats]]
-}
+# Filtering SNPs (if those arguments have been provided)
+SNPs <- MAP$marker.ID
+if (!is.na(fileSumstats)) SNPs <- filterFromFile(SNPs, fileSumstats, col=columnRsidSumstats)
+if (!is.na(fileKeepSNPs)) SNPs <- filterFromFile(SNPs, fileKeepSNPs)
+colnames(MAP) <- c('chr', 'rsid', 'pos', 'a1', 'a0')
 useSNPs <- MAP$rsid %in% SNPs
-cat('A total of', sum(useSNPs), 'will be used for LD calculation\n')
+nSNPs <- sum(useSNPs)
+if (nSNPs == 0) stop('No SNPs available.')
+cat('A total of', nSNPs, 'will be used for LD calculation\n')
 
 individualSample <- rows_along(G)
+# Extract individuals
+if (!is.na(extractIndividuals)) {
+  cat('Extracting individuals...\n')
+  inds <- filterFromFile(obj.bigSNP$fam, extractIndividuals, colFilter='sample.ID')
+  individualSample <- which(obj.bigSNP$fam$sample.ID %in% inds$sample.ID)
+}
+
+# Sample individuals
 if (!is.na(sampleIndividuals)) {
   cat('Drawing', sampleIndividuals, 'individuals at random\n')
-  if (nrow(G) < sampleIndividuals) stop('Requsted sample size is greater than the available:', nrow(G))
+  nInds <- length(individualSample)
+  if (nInds < sampleIndividuals) stop('Requsted sample size is greater than the available:', nInds)
   if (!is.na(sampleSeed)) set.seed(sampleSeed)
-  individualSample <- sample(nrow(G), sampleIndividuals)
+  individualSample <- sample(individualSample, sampleIndividuals)
 }
 
 cat('Calculating SNP correlation/LD using', NCORES, 'cores\n')
 temp <- tempfile(tmpdir='temp')
 cat('Using file', temp, 'to store matrixes\n')
+
 MAP$ld <- NA
 cat('Chromosome: ')
 for (chr in chr2use) {
@@ -113,17 +126,16 @@ for (chr in chr2use) {
   # nDataPoints could probably be a higher nr. I put this here to ensure that filtering
   # works and that the resulting MAP has NA's in it.
   if (nDataPoints == 0) {
-    warning('\nSkipping chromosome', chr,'. Reason: 0 SNPs available\n')
+    warning('\nSkipping chromosome ', chr,'. Reason: 0 SNPs available\n')
     next
   }
-
   corr0 <- snp_cor(G, ind.col=indices.G, ind.row=individualSample, size=argWindowSize/1000,
                    infos.pos=GD[indices.G], ncores=NCORES, thr_r2=argThresholdR2)
-  fileName <- str_replace(fileLDBlocks, "@", toString(chr))
+  fileName <- str_replace(fileLDChr, "@", toString(chr))
   ld <- Matrix::colSums(corr0^2)
   MAP$ld[indices.G] <- ld
   saveRDS(corr0, file=fileName)
 }
 cat('\nWriting map to', fileLDMap, '\n')
+MAP <- MAP[useSNPs,]
 saveRDS(MAP, file=fileLDMap)
-
