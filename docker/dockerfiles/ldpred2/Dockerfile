@@ -1,5 +1,5 @@
 # R container
-FROM rocker/r-ver:4.3.1
+FROM rocker/r-ver:4.3.3
 
 ENV TZ=Europe
 ENV DEBIAN_FRONTEND noninteractive
@@ -8,15 +8,15 @@ WORKDIR /tmp/
 
 # some system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    apt-utils=2.4.10 \
+    apt-utils=2.4.12 \
     ca-certificates=20230311ubuntu0.22.04.1 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     update-ca-certificates
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    cmake=3.22.1-1ubuntu1.22.04.1 \
-    curl=7.81.0-1ubuntu1.13 \
+    cmake=3.22.1-1ubuntu1.22.04.2 \
+    curl=7.81.0-1ubuntu1.16 \
     libatlas-base-dev=3.10.3-12ubuntu1 \
     libctl-dev=4.5.1-1 \
     libeigen3-dev=3.4.0-2ubuntu2 \
@@ -24,7 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libicu-dev=70.1-2 \
     node-shasum=1.0.2-3 \
     patch=2.7.6-7build2 \
-    unzip=6.0-26ubuntu3.1 \
+    unzip=6.0-26ubuntu3.2 \
     wget=1.21.2-2ubuntu1 \
     zlib1g-dev=1:1.2.11.dfsg-2ubuntu9.2 \
     && \
