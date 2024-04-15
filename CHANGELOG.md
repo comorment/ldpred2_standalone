@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- additions goes here
+- Added Docker build push action to push images to GH container registry
 
 ### Updated
 
