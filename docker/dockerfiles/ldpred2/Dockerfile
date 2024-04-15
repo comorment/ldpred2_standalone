@@ -1,5 +1,6 @@
 # R container
 FROM rocker/r-ver:4.3.3
+RUN /rocker_scripts/setup_R.sh https://packagemanager.posit.co/cran/__linux__/jammy/2024-03-01
 
 ENV TZ=Europe
 ENV DEBIAN_FRONTEND noninteractive
@@ -20,6 +21,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libatlas-base-dev=3.10.3-12ubuntu1 \
     libctl-dev=4.5.1-1 \
     libeigen3-dev=3.4.0-2ubuntu2 \
+    libgcc-11-dev=11.4.0-1ubuntu1~22.04 \
     libgslcblas0=2.7.1+dfsg-3 \
     libicu-dev=70.1-2 \
     node-shasum=1.0.2-3 \
@@ -32,15 +34,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # R dependencies
-RUN R -e "install.packages('devtools', version='2.4.5', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('argparser', version='0.7.1', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('bigsnpr', version='1.11.6', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('data.table', version='1.14.6', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('optparse', version='1.7.3', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('stringr', version='1.5.0', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('R.utils', version='2.12.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))" && \
-    R -e "install.packages('tidyverse', version='1.3.2', repos='https://packagemanager.posit.co/cran/__linux__/jammy/2023-02-16', dependencies=c('Depends', 'Imports', 'LinkingTo'))"
-        
+RUN R -e "install.packages(c('devtools', 'argparser', 'bigsnpr', 'data.table', 'optparse', 'stringr', 'R.utils', 'tidyverse'), dependencies=c('Depends', 'Imports', 'LinkingTo'))"
+
+    
 # install plink 1.9
 RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
     unzip v2.00a4.5.zip
