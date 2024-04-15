@@ -161,3 +161,46 @@ rename_columns <- function(df, old_names, new_names) {
   colnames(df)[match(old_names, colnames(df))] <- new_names
   return(df)
 }
+
+# Filter a data frame or a vector using values in a file
+# Mainly used to filter snps
+#' @param dta Either a data frame or vector
+#' @param fileFilter A file with RSIDs
+#' @param colFilter Column name in dta to filter on
+#' @param col The column name in fileSNPs if different than the first
+#' @param verbose Print progress
+#' @return Same object type as dta, filtered for entries in fileFilter
+filterFromFile <- function(dta, fileFilter, colFilter=NULL, col=NULL, verbose=T) {
+  if (is.data.frame(dta) && !(colFilter %in% colnames(dta))) stop('Missing column in data to filter: ', colFilter)
+  if (!file.exists(fileFilter)) stop('Could not find file: ', fileFilter)
+  rowsBefore <- length(dta)
+  dtaFilter <- data.table::fread(fileFilter, sep='auto', data.table=F)
+  if (is.character(col) && !(col %in% colnames(dtaFilter))) stop('Could not find column ', col, ' in file ', fileFilter)
+  if (is.integer(col) && !(col %in% 1:ncol(dtaFilter))) stop('Only columns indexed 1-', ncol(dtaFilter),' available in file ', fileFilter)
+  if (is.character(col) || is.integer(col)) dtaFilter <- dtaFilter[,col]
+  else dtaFilter <- dtaFilter[,1]
+  if (verbose) cat('Read', length(dtaFilter), 'rows from', fileFilter, '\n')
+  if (is.data.frame(dta)) {
+    dta <- dta[dta[,colFilter] %in% dtaFilter,]
+    nKept <- nrow(dta)
+  } else {
+    dta <- dta[dta %in% dtaFilter]
+    nKept <- length(dta)
+  }
+  if (verbose) cat('Retained', nrow(dta), 'out of', nKept, 'rows\n')
+  dta
+}
+
+# Get the betas from snp_ldpred2_auto
+#' @param fitAuto The return value form snp_ldpred2_auto
+#' @param quantile Range of estimates to keep
+getBetasAuto <- function (fitAuto, quantile=0.95, verbose=T) {
+  corrRange <- sapply(fitAuto, function (auto) diff(range(auto$corr_est)))
+  # Keep chains that pass the filtering below
+  keep <- (corrRange > (0.95 * quantile(corrRange, 0.95, na.rm=T)))
+  nas <- sum(is.na(keep))
+  if (nas > 0 && verbose) cat('Omitting', nas, 'chains out of', length(keep), ' due to missing values in correlation range\n')
+  keep[is.na(keep)] <- F
+  beta <- rowMeans(sapply(fitAuto[keep], function (auto) auto$beta_est))
+  beta
+}

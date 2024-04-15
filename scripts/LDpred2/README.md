@@ -2,7 +2,7 @@
 
 This directory contains a copy of LDpred2 related scripts taken from our main [CoMorMent/Containers](https://github.com/comorment/containers) repository, 
 in the [<containers>/scripts/pgs/LDpred2](https://github.com/comorment/containers/tree/main/scripts/pgs/LDpred2) directory. 
-Usage of these scripts are documented throughout the corresponding README file as well as in the online [documentation](https://comorment-containers.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
+Usage of these scripts are documented throughout the corresponding README file as well as in the online [documentation](https://cogedap.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
 
 Please note that some environment variables must be updated for Singularity compared to the above documentation, mainly:
 
@@ -12,7 +12,7 @@ export RSCRIPT="singularity exec --home=$PWD:/home $SIF/ldpred2.sif Rscript"
 ```
 
 Also note that this repository does not contain any reference datasets.
-If needed, please obtain them as described in the official [documentation](https://comorment-containers.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
+If needed, please obtain them as described in the official [documentation](https://cogedap.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
 
 ## Usage with ``ldpred2`` container
 
