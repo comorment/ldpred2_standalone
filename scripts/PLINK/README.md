@@ -22,12 +22,29 @@ PLINK v2.00a3 SSE4.2 (18 Feb 2022)
 
 ## Docker
 
-Assuming that ``<path/to/ldpred2_standalone>/dockerfiles/ldpred2/Dockerfile`` has been built locally by issuing:
+### Pulling
+
+The container can be pulled from the GitHub Container Registry by issuing:
+
+```
+$ docker pull ghcr.io/comorment/ldpred2:latest
+```
+
+For usage, the container can be tagged as
+```
+$ docker tag ghcr.io/comorment/ldpred2:latest ldpred2:latest
+```
+
+### Building
+
+The ``<path/to/ldpred2_standalone>/dockerfiles/ldpred2/Dockerfile`` can be built locally by issuing:
 
 ```
 export CONTAINER=ldpred2
 docker build -t $CONTAINER -f docker/dockerfiles/ldpred2/Dockerfile .
 ```
+
+### Using
 
 it can be used by issuing:
 
@@ -41,4 +58,4 @@ and similar for the ``plink2`` binary.
 
 ### MacOS Notes
 
-If running Docker on MacOS with a modern M1/M2 chip, include `--platform linux/amd64` in the `docker run` command (and similar) to execute the container for the correct architecture.
+If running Docker on MacOS with a modern M1/M2 chip, include `--platform linux/amd64` with the `docker pull` and `docker run` commands (and similar) to execute the container for the correct architecture.
