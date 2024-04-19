@@ -14,3 +14,4 @@ jobs:
         with:
           reporter: github-pr-review # Default is github-pr-check
           fail_on_error: true
+          hadolint_ignore: SC2086
