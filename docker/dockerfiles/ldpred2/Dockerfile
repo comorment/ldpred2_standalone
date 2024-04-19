@@ -79,7 +79,7 @@ WORKDIR /tmp
 RUN rm -rf 2.3.5.zip PRSice-2.3.5
 
 WORKDIR /tmp/miniforge
-RUN curl -sSL "https://github.com/conda-forge/miniforge/releases/download/24.3.0-0/Miniforge3-24.3.0-0-$(uname)-$(uname -m).sh" -o "/tmp/miniforge.sh" \
+RUN curl -sSL https://github.com/conda-forge/miniforge/releases/download/24.3.0-0/Miniforge3-24.3.0-0-"$(uname)"-"$(uname -m)".sh -o /tmp/miniforge.sh \
     && mkdir /root/.conda \
     && bash /tmp/miniforge.sh -bfp /usr/local \
     && rm -rf /tmp/miniforge.sh \
