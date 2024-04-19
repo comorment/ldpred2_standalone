@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added Docker build push action to push images to GH container registry
+- Added Python environment with basic dependencies for MiX3R (jupyter, numpy, pandas, scipy, matplotlib, numba, ++)
 
 ### Updated
 

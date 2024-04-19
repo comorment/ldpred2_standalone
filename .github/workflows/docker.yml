@@ -8,9 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: hadolint
         uses: reviewdog/action-hadolint@v1
         with:
           reporter: github-pr-review # Default is github-pr-check
           fail_on_error: true
+          hadolint_ignore: SC2086

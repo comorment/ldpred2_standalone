@@ -67,6 +67,22 @@ def test_ldpred2_R_packages():
     assert out.returncode == 0
 
 
+def test_ldpred2_python3_packages():
+    packages = [
+        'notebook',
+        'numba',
+        'numpy',
+        'matplotlib',
+        'pandas',
+        'scipy',
+        'seaborn',
+    ]
+    for pkg in packages:
+        call = f'{PREFIX} python3 -c "import {pkg}"'
+        out = subprocess.run(call, shell=True, check=True)
+        assert out.returncode == 0
+
+
 def test_ldpred2_bin_prsice():
     call = f'{PREFIX} PRSice --version'
     out = subprocess.run(call.split(' '), check=True)
