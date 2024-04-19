@@ -28,7 +28,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     node-shasum=1.0.2-3 \
     patch=2.7.6-7build2 \
     unzip=6.0-26ubuntu3.2 \
-    wget=1.21.2-2ubuntu1 \
     zlib1g-dev=1:1.2.11.dfsg-2ubuntu9.2 \
     && \
     apt-get clean && \
@@ -39,7 +38,7 @@ RUN R -e "install.packages(c('devtools', 'argparser', 'bigsnpr', 'data.table', '
 
     
 # install plink 1.9
-RUN wget -q --no-check-certificate https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
+RUN curl -sSL https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
     unzip v2.00a4.5.zip
 
 WORKDIR /tmp/plink-ng-2.00a4.5/1.9
@@ -57,7 +56,7 @@ RUN rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
 # install PRSice-2
 COPY patches/*.diff /tmp/patches/
-RUN wget -q --no-check-certificate https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
+RUN curl -sSL https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
     unzip 2.3.5.zip
 
 WORKDIR /tmp/PRSice-2.3.5
@@ -96,14 +95,12 @@ RUN mamba install \
     matplotlib-base==3.8.4 \
     seaborn==0.13.2 \
     notebook==7.1.3 \
-    --yes
-
-RUN mamba install icc_rt==2020.2 --channel numba --yes
+    --yes && \
+    mamba install icc_rt==2020.2 --channel numba --yes
 
 # clean up
-RUN mamba clean -a -y
-RUN pip cache purge 
-
-RUN rm -rf /tmp/*
+RUN mamba clean -a -y && \
+        pip cache purge && \
+    rm -rf /tmp/*
 
 WORKDIR /
