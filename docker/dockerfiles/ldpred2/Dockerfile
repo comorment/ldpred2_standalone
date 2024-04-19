@@ -38,7 +38,7 @@ RUN R -e "install.packages(c('devtools', 'argparser', 'bigsnpr', 'data.table', '
 
     
 # install plink 1.9
-RUN curl -sSL https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip && \
+RUN curl -sSL https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip -o v2.00a4.5.zip && \
     unzip v2.00a4.5.zip
 
 WORKDIR /tmp/plink-ng-2.00a4.5/1.9
@@ -56,7 +56,7 @@ RUN rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
 
 # install PRSice-2
 COPY patches/*.diff /tmp/patches/
-RUN curl -sSL https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip && \
+RUN curl -sSL https://github.com/choishingwan/PRSice/archive/refs/tags/2.3.5.zip -o 2.3.5.zip && \
     unzip 2.3.5.zip
 
 WORKDIR /tmp/PRSice-2.3.5
@@ -79,7 +79,7 @@ WORKDIR /tmp
 RUN rm -rf 2.3.5.zip PRSice-2.3.5
 
 WORKDIR /tmp/miniforge
-RUN curl -sSL https://github.com/conda-forge/miniforge/releases/download/24.3.0-0/Miniforge3-24.3.0-0-$(uname)-$(uname -m).sh -o /tmp/miniforge.sh \
+RUN curl -sSL "https://github.com/conda-forge/miniforge/releases/download/24.3.0-0/Miniforge3-24.3.0-0-$(uname)-$(uname -m).sh" -o /tmp/miniforge.sh \
     && mkdir /root/.conda \
     && bash /tmp/miniforge.sh -bfp /usr/local \
     && rm -rf /tmp/miniforge.sh \
