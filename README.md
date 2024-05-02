@@ -18,13 +18,13 @@ git pull
 ## Build status
 
 [![License](http://img.shields.io/:license-GPLv3+-green.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
-[![Documentation Status](https://readthedocs.org/projects/container-template/badge/?version=latest)](https://container-template.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/ldpred2_standalone/badge/?version=latest)](https://ldpred2_standalone.readthedocs.io/en/latest/?badge=latest)
 [![Flake8 lint](https://github.com/comorment/ldpred2_standalone/actions/workflows/python.yml/badge.svg)](https://github.com/comorment/ldpred2_standalone/actions/workflows/python.yml)
 [![Dockerfile lint](https://github.com/comorment/ldpred2_standalone/actions/workflows/docker.yml/badge.svg)](https://github.com/comorment/ldpred2_standalone/actions/workflows/docker.yml)
 
 ## Description of available containers
 
-* ``ldpred2.sif`` - a minimal Singularity container with R based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/), and R dependencies for running PGS using [LDpred2](https://privefl.github.io/bigsnpr/articles/LDpred2.html).
+* ``ldpred2.sif`` - a minimal Singularity container with R and RStudio based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [Python](https://python.org) with some common numerics and plotting packages, [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/), and R dependencies for running PGS using [LDpred2](https://privefl.github.io/bigsnpr/articles/LDpred2.html).
 
 
 ## Using
@@ -38,12 +38,12 @@ Please keep up to date when pushing new container builds:
 
 ## Building/rebuilding containers
 
-For instructions on how to build or rebuild containers using [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) refer to [`<ldpred2_standalone>/docker/README.md`](https://github.com/comorment/ldpred2_standalone/blob/main/docker/README.md).
+For instructions on how to build or rebuild containers using [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) or [Apptainer](https://apptainer.org) refer to [`<ldpred2_standalone>/docker/README.md`](https://github.com/comorment/ldpred2_standalone/blob/main/docker/README.md).
 
 ## Build the documentation
 
 Within this repository, the html-documentation can be built from source files put here using [Sphinx](https://www.sphinx-doc.org/en/master/index.html). 
-To do so, install Sphinx and some additional packages in python using [Conda](https://docs.conda.io/en/latest/) by issuing:
+To do so, install Sphinx and some additional packages in Python using [Conda](https://docs.conda.io/en/latest/) by issuing:
 
 ```
 cd <ldpred2_standalone>/docs/source
@@ -60,7 +60,7 @@ The documentation may also be hosted online on [readthedocs.org](https://readthe
 ## SLURM jobscript example
 
 A basic job script example for running a Singularity container in an HPC setting with the [SLURM](https://slurm.schedmd.com) job scheduler is provided in the file [singularity_slurm_job.sh](https://github.com/comorment/ldpred2_standalone/blob/main/scripts/singularity_slurm_job.sh), and should be modified as needed.
-It expects a few environment variables, and can be submitted as
+It expects a few environment variables and can be submitted as
 
 ```
 export JOBNAME=ldpred2_standalone

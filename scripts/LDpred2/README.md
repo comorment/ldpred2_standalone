@@ -16,9 +16,37 @@ If needed, please obtain them as described in the official [documentation](https
 
 ## Usage with ``ldpred2`` container
 
-Minimal example invoking the R scripts provided here using:
+Minimal example invoking the R scripts provided here using either Apptainer/Singularity or Docker is shown below.
+The latter is recommended for MacOS users with M1/M2 and newer chipsets.
 
-### Singularity
+### Apptainer/Singularity
+
+Apptainer [https://apptainer.org](https://apptainer.org) is a tool to run Singularity containers with a simple command line interface.
+
+#### Pulling
+
+The container can be pulled from the GitHub Container Registry [ghcr.io](https://ghcr.io) on hosts with internet access by issuing:
+
+```
+$ apptainer pull ghcr.io/comorment/ldpred2:latest
+```
+
+or
+
+```
+$ singularity pull docker://ghcr.io/comorment/ldpred2:latest
+```
+
+or using the [ORAS CLI](https://oras.land)
+
+```
+$ oras pull ghcr.io/comorment/ldpred2:latest
+```
+
+Either of the above will put the container in the current directory as `ldpred2.sif`.
+The recommended location is `<path/to/ldpred2_standalone>/containers/ldpred2.sif`.
+
+#### Using
 
 ```
 $ export CONTAINER=<path/to/ldpred2_standalone>/containers/ldpred2.sif
