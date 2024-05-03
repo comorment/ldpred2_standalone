@@ -3,7 +3,9 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.10
+  - git-lfs
+  - oras
+  - python=3.11
   - pytest
   - sphinx
   - sphinx_rtd_theme
