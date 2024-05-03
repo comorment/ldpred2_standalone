@@ -51,7 +51,7 @@ git pull
 ## Build status
 
 [![License](http://img.shields.io/:license-GPLv3+-green.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
-[![Documentation Status](https://readthedocs.org/projects/ldpred2_standalone/badge/?version=latest)](https://ldpred2_standalone.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/ldpred2-standalone/badge/?version=latest)](https://ldpred2-standalone.readthedocs.io/en/latest/?badge=latest)
 [![Flake8 lint](https://github.com/comorment/ldpred2_standalone/actions/workflows/python.yml/badge.svg)](https://github.com/comorment/ldpred2_standalone/actions/workflows/python.yml)
 [![Dockerfile lint](https://github.com/comorment/ldpred2_standalone/actions/workflows/docker.yml/badge.svg)](https://github.com/comorment/ldpred2_standalone/actions/workflows/docker.yml)
 
