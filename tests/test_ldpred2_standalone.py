@@ -76,6 +76,7 @@ def test_ldpred2_python3_packages():
         'pandas',
         'scipy',
         'seaborn',
+        'sklearn',
     ]
     for pkg in packages:
         call = f'{PREFIX} python3 -c "import {pkg}"'

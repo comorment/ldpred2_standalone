@@ -8,17 +8,38 @@ To set up this project on the local machine, the following may be required:
 
 * [git](https://git-scm.com)
 * [git LFS](https://git-lfs.com)
-* [Docker](https://www.docker.com)
-* [Singularity](https://docs.sylabs.io) or [Apptainer](https://apptainer.org)
-* [ORAS CLI](https://oras.land)
+* [Docker](https://www.docker.com). Recommended for MacOS users (with M1, M2, or newer chips)
+* [Singularity](https://docs.sylabs.io) or [Apptainer](https://apptainer.org). Recommended for Linux users, or for MacOS users (with Intel chips), or for secure systems with no direct internet access.
+* [ORAS CLI](https://oras.land). Recommended for Linux users, or for users wishing to download the Singularity container from the GitHub Container Registry
+* [Python](https://python.org) version 3.11 or newer
 
 There are multiple methods to install these dependencies, and the user should choose the one that best fits their system.
 Please refer to the respective websites for installation instructions.
 
+### Conda environment
+
+For ease of use, a [Conda](https://docs.conda.io/en/latest/) environment file is provided in the [conda-environment.yml](https://github.com/comorment/ldpred2_standalone/blob/main/conda-environment.yml) in this repository.
+
+To create a new Conda environment with the required dependencies, issue in the terminal:
+
+```
+conda env create -f conda-environment.yml
+conda activate ldpred2_standalone
+```
+
+To obtain Conda, please refer to the [Conda installation instructions](https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html).
+
 ## Obtaining these files
 
-To use these files and codes, [clone](https://github.com/comorment/ldpred2_standalone) this repository by pressing that green [![Code](https://img.shields.io/badge/Code-green.svg)](https://github.com/comorment/ldpred2_standalone) button above and follow the instructions.
-This repository also uses [git LFS](https://git-lfs.com) for large, non-code files.
+To use these files and codes, [clone](https://github.com/comorment/ldpred2_standalone) this repository by pressing the green [![Code](https://img.shields.io/badge/Code-green.svg)](https://github.com/comorment/ldpred2_standalone) button above and follow the instructions.
+
+For those who will not need the entire development history, a shallow clone may be performed by issuing:
+
+```
+git clone --depth 1 https://github.com/comorment/ldpred2_standalone.git
+```
+
+This repository may use [git LFS](https://git-lfs.com) for large, non-code files.
 After cloning the repository, initialize git LFS locally by issuing in the terminal:
 
 ```
@@ -36,19 +57,18 @@ git pull
 
 ## Description of available containers
 
-* ``ldpred2.sif`` - a minimal Singularity container with R and RStudio based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [Python](https://python.org) with some common numerics and plotting packages, [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/), and R dependencies for running PGS using [LDpred2](https://privefl.github.io/bigsnpr/articles/LDpred2.html).
-
+* ``ldpred2.sif`` - a minimal Singularity container with R and RStudio based on [rocker/r-ver](https://rocker-project.org/images/versioned/r-ver.html), [Python](https://python.org) with some common numerics and plotting packages, [PLINK](https://www.cog-genomics.org/plink/) version 1.9 and 2.0, and [PRSice-2](https://choishingwan.github.io/PRSice/), and dependencies for running PGS using [LDpred2](https://privefl.github.io/bigsnpr/articles/LDpred2.html).
 
 ## Using
 
-Please refer to the scripts and README files in [scripts](https://github.com/comorment/ldpred2_standalone/tree/main/scripts/) directory for usage
+Please refer to the scripts and README files in the [scripts](https://github.com/comorment/ldpred2_standalone/tree/main/scripts/) directory for usage
 
 ## Software versions
 
 This [table](https://github.com/comorment/ldpred2_standalone/tree/main/docker#ldpred2sif) contains the list of tools included in the different Dockerfile(s) and installer bash scripts for each container.
 Please keep up to date when pushing new container builds:
 
-## Building/rebuilding containers
+## Pulling/Building/rebuilding containers
 
 For instructions on how to build or rebuild containers using [Docker](https://www.docker.com) and [Singularity](https://docs.sylabs.io) or [Apptainer](https://apptainer.org) refer to [`<ldpred2_standalone>/docker/README.md`](https://github.com/comorment/ldpred2_standalone/blob/main/docker/README.md).
 
@@ -69,7 +89,7 @@ The built documentation can be viewed locally in a web browser by opening the fi
 
 The documentation may also be hosted online on [readthedocs.org](https://readthedocs.org).
 
-## SLURM jobscript example
+## SLURM job script example
 
 A basic job script example for running a Singularity container in an HPC setting with the [SLURM](https://slurm.schedmd.com) job scheduler is provided in the file [singularity_slurm_job.sh](https://github.com/comorment/ldpred2_standalone/blob/main/scripts/singularity_slurm_job.sh), and should be modified as needed.
 It expects a few environment variables and can be submitted as

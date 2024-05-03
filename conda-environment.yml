@@ -1,7 +1,6 @@
 name: ldpred2_standalone
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - git-lfs
   - oras
@@ -10,5 +9,6 @@ dependencies:
   - sphinx
   - sphinx_rtd_theme
   - m2r2
+  - myst-parser
   - pip
   - pip:
