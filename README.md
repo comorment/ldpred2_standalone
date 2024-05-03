@@ -2,10 +2,22 @@
 
 Software container build(s) and utilities for computing polygenic scores (PGS), based on our main development repository [CoMorMent/Containers](https://github.com/comorment/containers)
 
+## Dependencies
+
+To set up this project on the local machine, the following may be required:
+
+* [git](https://git-scm.com)
+* [git LFS](https://git-lfs.com)
+* [Docker](https://www.docker.com)
+* [Singularity](https://docs.sylabs.io) or [Apptainer](https://apptainer.org)
+* [ORAS CLI](https://oras.land)
+
+There are multiple methods to install these dependencies, and the user should choose the one that best fits their system.
+Please refer to the respective websites for installation instructions.
+
 ## Obtaining these files
 
 To use these files and codes, [clone](https://github.com/comorment/ldpred2_standalone) this repository by pressing that green [![Code](https://img.shields.io/badge/Code-green.svg)](https://github.com/comorment/ldpred2_standalone) button above and follow the instructions.
-
 This repository also uses [git LFS](https://git-lfs.com) for large, non-code files.
 After cloning the repository, initialize git LFS locally by issuing in the terminal:
 
