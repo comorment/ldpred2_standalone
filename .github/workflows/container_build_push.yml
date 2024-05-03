@@ -21,7 +21,8 @@ jobs:
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
-            type=sha     
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -47,28 +48,16 @@ jobs:
             ./dockerfiles/ldpred2/Dockerfile
           platforms: linux/amd64
 
-  build-push-singularity-container:
+  build-apptainer-container:
     needs: docker
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-    container:
-        image: quay.io/singularity/singularity:v4.1.0
-        options: --privileged
-    name: Pull-push Singularity Container
+    name: Build Apptainer Container
     steps:
       - name: Check out code for the container builds
         uses: actions/checkout@v4
-      - name: Install dependencies
-        run: |
-          apk add --no-cache curl
-          VERSION="1.1.0"
-          curl -LO "https://github.com/oras-project/oras/releases/download/v${VERSION}/oras_${VERSION}_linux_amd64.tar.gz"
-          mkdir -p oras-install/
-          tar -zxf oras_${VERSION}_*.tar.gz -C oras-install/
-          sudo mv oras-install/oras /usr/local/bin/
-          rm -rf oras_${VERSION}_*.tar.gz oras-install/
       - name: Docker meta 
         id: meta
         uses: docker/metadata-action@v5
@@ -78,21 +67,17 @@ jobs:
           tags: |
             type=semver,pattern={{version}}
             type=ref,event=branch
-            type=sha   
-      - name: Pull and push Singularity container
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+      - name: Build and push Apptainer container
         run: |
           tags="${{ steps.meta.outputs.tags }}"
-          tags_array=
-          old_ifs="$IFS"
-          IFS=$'\n'
-          for tag in $tags; do
-              tags_array="$tags_array $tag"
-          done
-          IFS="$old_ifs"
           echo ${{ secrets.GITHUB_TOKEN }} | oras login --username ${{ github.repository_owner }} --password-stdin ghcr.io
-          for tag in $tags_array; do
+          docker pull kaczmarj/apptainer:latest
+          echo "$tags"
+          for tag in $tags; do
             echo "processing tag: $tag"
-            singularity pull ldpred2.sif docker://"$tag"
+            docker run --rm --privileged -v $(pwd):/work kaczmarj/apptainer build ldpred2.sif docker://"$tag"
             oras push "$tag" --artifact-type application/vnd.acme.rocket.config ldpred2.sif
             rm ldpred2.sif
           done

@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # R dependencies
-RUN R -e "install.packages(c('devtools', 'argparser', 'bigsnpr', 'data.table', 'essentials', 'eulerr', 'IRkernel', 'optparse', 'stringr', 'R.utils', 'tidyverse'), dependencies=c('Depends', 'Imports', 'LinkingTo'))"
+RUN R -e "withCallingHandlers(install.packages(c('devtools', 'argparser', 'bigsnpr', 'data.table', 'essentials', 'eulerr', 'IRkernel', 'optparse', 'stringr', 'R.utils', 'tidyverse'), dependencies=c('Depends', 'Imports', 'LinkingTo')), warning = function(w) stop(w))"
 
     
 # install plink 1.9
