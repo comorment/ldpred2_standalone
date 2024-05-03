@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgcc-11-dev=11.4.0-1ubuntu1~22.04 \
     libgslcblas0=2.7.1+dfsg-3 \
     libicu-dev=70.1-2 \
+    libzstd-dev=1.4.8+dfsg-3build1 \
     node-shasum=1.0.2-3 \
     patch=2.7.6-7build2 \
     unzip=6.0-26ubuntu3.2 \
@@ -37,22 +38,23 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN R -e "withCallingHandlers(install.packages(c('devtools', 'argparser', 'bigsnpr', 'data.table', 'essentials', 'eulerr', 'IRkernel', 'optparse', 'stringr', 'R.utils', 'tidyverse'), dependencies=c('Depends', 'Imports', 'LinkingTo')), warning = function(w) stop(w))"
 
     
-# install plink 1.9
-RUN curl -sSL https://github.com/chrchang/plink-ng/archive/refs/tags/v2.00a4.5.zip -o v2.00a4.5.zip && \
-    unzip v2.00a4.5.zip
+# install plink 1.9 and plink 2.0 alpha
+RUN curl -sSL https://github.com/chrchang/plink-ng/archive/8b4f3f50068885b023b53010ddc548b062a3f44d.zip -o plink-ng.zip && \
+    unzip plink-ng.zip && \
+    mv plink-ng-8b4f3f50068885b023b53010ddc548b062a3f44d plink-ng
 
-WORKDIR /tmp/plink-ng-2.00a4.5/1.9
+WORKDIR /tmp/plink-ng/1.9
 RUN ./plink_first_compile && \
     cp plink /bin/
 
 # install plink 2
-WORKDIR /tmp/plink-ng-2.00a4.5/2.0
+WORKDIR /tmp/plink-ng/2.0
 RUN make -j && \
     cp "${PWD}"/bin/* /bin/
 
 # clean up
 WORKDIR /tmp
-RUN rm -rf v2.00a4.5.zip plink-ng-2.00a4.5
+RUN rm -rf plink-ng.zip plink-ng
 
 # install PRSice-2
 COPY patches/*.diff /tmp/patches/
@@ -95,6 +97,7 @@ RUN mamba install \
     matplotlib-base==3.8.4 \
     seaborn==0.13.2 \
     notebook==7.1.3 \
+    scikit-learn=1.4.2 \
     --yes && \
     mamba install icc_rt==2020.2 --channel numba --yes
 

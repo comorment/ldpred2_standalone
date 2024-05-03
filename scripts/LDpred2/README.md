@@ -2,7 +2,7 @@
 
 This directory contains a copy of LDpred2 related scripts taken from our main [CoMorMent/Containers](https://github.com/comorment/containers) repository, 
 in the [<containers>/scripts/pgs/LDpred2](https://github.com/comorment/containers/tree/main/scripts/pgs/LDpred2) directory. 
-Usage of these scripts are documented throughout the corresponding README file as well as in the online [documentation](https://cosgap.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
+Usage of these scripts is documented throughout the corresponding README file as well as in the online [documentation](https://cosgap.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
 
 Please note that some environment variables must be updated for Singularity compared to the above documentation, mainly:
 
@@ -11,12 +11,12 @@ export SIF=<path/to/ldpred2_standalone>/containers
 export RSCRIPT="singularity exec --home=$PWD:/home $SIF/ldpred2.sif Rscript"
 ```
 
-Also note that this repository does not contain any reference datasets.
+Also, note that this repository does not contain any reference datasets.
 If needed, please obtain them as described in the official [documentation](https://cosgap.readthedocs.io/en/latest/scripts/pgs/LDpred2/README.html).
 
 ## Usage with ``ldpred2`` container
 
-Minimal example invoking the R scripts provided here using either Apptainer/Singularity or Docker is shown below.
+Some minimal examples invoking the R scripts provided here using either Apptainer/Singularity or Docker are shown below.
 The latter is recommended for MacOS users with M1/M2 and newer chipsets.
 
 ### Apptainer/Singularity
@@ -44,7 +44,7 @@ $ oras pull ghcr.io/comorment/ldpred2:latest
 ```
 
 Either of the above will put the container in the current directory as `ldpred2.sif`.
-The recommended location is `<path/to/ldpred2_standalone>/containers/ldpred2.sif`.
+The recommended file location is `<path/to/ldpred2_standalone>/containers/ldpred2.sif` for these examples.
 
 #### Using
 
@@ -88,6 +88,9 @@ For usage, the container can be tagged as
 ```
 $ docker tag ghcr.io/comorment/ldpred2:latest ldpred2:latest
 ```
+
+Multiple tags may exist for the container, see the [GitHub Container Registry](https://ghcr.io/comorment/ldpred2) for more information.
+The tags are generally the same as for the Docker containers.
 
 #### Building
 
