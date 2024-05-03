@@ -72,13 +72,16 @@ jobs:
       - name: Build and push Apptainer container
         run: |
           tags="${{ steps.meta.outputs.tags }}"
+          csv_tags=$(printf "%s\n" "$tags" | awk -F: 'NR==1{printf "%s,", $0; next} {printf "%s,", $NF}' | sed 's/,$//')
+          IFS= read -r first_tag <<EOF
+          $tags
+          EOF
+          echo "The first tag is: $first_tag"
+          echo "CSV-tags are: $csv_tags"
           echo ${{ secrets.GITHUB_TOKEN }} | oras login --username ${{ github.repository_owner }} --password-stdin ghcr.io
           docker pull kaczmarj/apptainer:latest
-          echo "$tags"
-          for tag in $tags; do
-            echo "processing tag: $tag"
-            docker run --rm --privileged -v $(pwd):/work kaczmarj/apptainer build ldpred2.sif docker://"$tag"
-            oras push "$tag" --artifact-type application/vnd.acme.rocket.config ldpred2.sif
-            rm ldpred2.sif
-          done
+          echo "processing tag: $first_tag"
+          docker run --rm --privileged -v $(pwd):/work kaczmarj/apptainer build ldpred2.sif docker://"$first_tag"
+          oras push "$csv_tags" --artifact-type application/vnd.acme.rocket.config ldpred2.sif
+          rm ldpred2.sif
         shell: sh
