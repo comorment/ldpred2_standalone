@@ -2,6 +2,10 @@
 FROM rocker/r-ver:4.3.3
 RUN /rocker_scripts/setup_R.sh https://packagemanager.posit.co/cran/__linux__/jammy/2024-03-01
 
+LABEL org.opencontainers.image.source=https://github.com/comorment/ldpred2_standalone
+LABEL org.opencontainers.image.description="R, Rstudio, LDpred2 dependencies, PLINK, PRSice2, Python"
+LABEL org.opencontainers.image.licenses=GPL-3.0
+
 ENV TZ=Europe
 ENV DEBIAN_FRONTEND noninteractive
 

@@ -40,7 +40,7 @@ $ singularity pull docker://ghcr.io/comorment/ldpred2:latest
 or using the [ORAS CLI](https://oras.land)
 
 ```
-$ oras pull ghcr.io/comorment/ldpred2:latest
+$ oras pull ghcr.io/comorment/ldpred2_sif:latest
 ```
 
 Either of the above will put the container in the current directory as `ldpred2.sif`.
